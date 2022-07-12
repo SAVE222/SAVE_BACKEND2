@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: save
+
+  datasource:
+    url: jdbc:mysql://
+    username: save
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
