@@ -1,9 +1,12 @@
+server:
+  port: 9000
+
 spring:
   application:
     name: save
 
   datasource:
-    url: jdbc:mysql://
+    url: jdbc:mysql:// save-database-1.cnsy3pfkdksx.ap-northeast-2.rds.amazonaws.com
     username: save
-    password:
+    password: Team.Save22!
     driver-class-name: com.mysql.cj.jdbc.Driver
