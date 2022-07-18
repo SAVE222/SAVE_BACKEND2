@@ -1,0 +1,54 @@
+package com.save_backend.src.child;
+
+import com.save_backend.src.child.model.GetChildInfoRes;
+import com.save_backend.src.child.model.PostChildReq;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+
+@Repository
+public class ChildDao {
+
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public void setDataSource(DataSource dataSource){
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
+    }
+
+    public GetChildInfoRes getChildInfoByIdx(int childIdx){
+        String getChildInfoByIdxQuery =
+                "select child_name, is_certain, child_gender, child_age, child_address, child_detail_address from child where child_idx=?;";
+        int getChildInfoByIdxParams = childIdx;
+        return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
+                (rs, rowNum) -> new GetChildInfoRes (
+                        rs.getString("child_name"),
+                        rs.getString("child_gender"),
+                        rs.getString("child_age"),
+                        rs.getString("child_address"),
+                        rs.getString("child_detail_address")
+                ), getChildInfoByIdxParams
+        );
+    }
+
+    public int insertChild(PostChildReq postChildReq) {
+        String insertChildQuery = "insert into child(user_idx, child_name, is_certain, child_gender, child_age, child_address, child_detail_address) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
+        Object[] insertChildParams = new Object[]{
+                postChildReq.getUserIdx(), postChildReq.getName(), postChildReq.isCertain(), postChildReq.getGender(), postChildReq.getAge(), postChildReq.getAddress(), postChildReq.getDetailAddress()
+        };
+
+        this.jdbcTemplate.update(insertChildQuery, insertChildParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
+
+    public int checkUser(int userIdx){
+        String checkUserQuery = "select exists(select user_idx from user where user_idx = ?)";
+        int checkUserParams = userIdx;
+        return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
+    }
+}
