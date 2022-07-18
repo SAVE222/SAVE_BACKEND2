@@ -3,6 +3,7 @@ package com.save_backend.src.suspect;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
+import com.save_backend.src.suspect.model.GetSuspectRes;
 import com.save_backend.src.suspect.model.PostSuspectReq;
 import com.save_backend.src.suspect.model.PostSuspectRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class SuspectController {
     }
 
     /**
-     * 학대의심자 정보 생성 API
+     * 1. 학대의심자 정보 생성 API
      * [POST] /suspect
      */
     @ResponseBody
@@ -56,6 +57,21 @@ public class SuspectController {
         }
     }
 
+    /**
+     * 2. 학대의심자 정보 조회 API
+     * 학대의심자 인덱스를 통해 특정 의심자 정보 조회
+     */
+    @ResponseBody
+    @GetMapping("/{suspectIdx}")
+    public BaseResponse<GetSuspectRes> getSuspectByIdx(@PathVariable("suspectIdx")int suspectIdx){
+        try {
+            GetSuspectRes getSuspectRes = suspectProvider.getSuspectByIdx(suspectIdx);
+            return new BaseResponse<>(getSuspectRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+
+        }
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.save_backend.src.suspect;
 
+import com.save_backend.src.suspect.model.GetSuspectRes;
 import com.save_backend.src.suspect.model.PostSuspectReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -35,6 +36,24 @@ public class SuspectDao {
         this.jdbcTemplate.update(createSuspectQuery, createSuspectParams);
         String lastInsertQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertQuery,int.class);
+    }
+
+    public GetSuspectRes getSuspectByIdx(int suspectIdx){
+        String getSuspectByIdxQuery = "SELECT\n" +
+                "    suspect_name, suspect_gender, suspect_age, suspect_address, suspect_detail_address, suspect_etc\n" +
+                "FROM suspect\n" +
+                "WHERE suspect_idx = ?;";
+        int getSuspectByIdxParams = suspectIdx;
+        String x;
+        return this.jdbcTemplate.queryForObject(getSuspectByIdxQuery,
+                (rs, rowNum) -> new GetSuspectRes(
+                        rs.getString("suspect_name"),
+                        rs.getString("suspect_gender"),
+                        rs.getString("suspect_age"),
+                        rs.getString("suspect_address"),
+                        rs.getString("suspect_detail_address"),
+                        rs.getString("suspect_etc")),
+                getSuspectByIdxParams);
     }
 
 
