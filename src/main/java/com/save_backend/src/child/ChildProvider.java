@@ -20,7 +20,6 @@ public class ChildProvider {
             GetChildInfoRes getChildInfoRes = childDao.getChildInfoByIdx(childIdx);
             return getChildInfoRes;
         } catch (Exception exception) {
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }
@@ -29,7 +28,6 @@ public class ChildProvider {
         try{
             return childDao.checkUser(userIdx);
         } catch (Exception exception) {
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }

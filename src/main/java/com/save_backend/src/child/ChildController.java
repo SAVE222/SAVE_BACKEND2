@@ -14,9 +14,7 @@ import static com.save_backend.config.response.BaseResponseStatus.*;
 @RequestMapping("/child")
 public class ChildController {
 
-    @Autowired
     private final ChildProvider childProvider;
-    @Autowired
     private final ChildService childService;
 
 
@@ -35,7 +33,6 @@ public class ChildController {
             GetChildInfoRes getChildInfoRes = childProvider.getChildInfoByIdx(childIdx);
             return new BaseResponse<>(getChildInfoRes);
         } catch(BaseException exception){
-            System.out.println("exception = " + exception);
             return new BaseResponse<>((exception.getStatus()));
         }
     }
@@ -68,7 +65,6 @@ public class ChildController {
             PostChildRes postChildRes = childService.createChild(postChildReq);
             return new BaseResponse<>(postChildRes);
         } catch (BaseException exception) {
-            System.out.println("exception = " + exception);
             return new BaseResponse<>(exception.getStatus());
         }
     }

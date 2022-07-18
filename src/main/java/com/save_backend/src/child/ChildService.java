@@ -32,7 +32,6 @@ public class ChildService {
             int childIdx = childDao.insertChild(postChildReq);
             return new PostChildRes(childIdx);
         } catch (Exception exception) {
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }
