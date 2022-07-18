@@ -18,19 +18,18 @@ public enum BaseResponseStatus {
 
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
     INVALID_JWT(false, 2002, "유효하지 않은 JWT입니다."),
-    INVALID_USER_JWT(false, 2003,"권한이 없는 유저의 접근입니다."),
-    USERS_EMPTY_USER_ID(false, 2004, "유저 아이디 값을 확인해주세요."),
+    USERS_INVALID_USER(false, 2003,"권한이 없는 유저의 접근입니다."),
+    USERS_INACTIVE_USER_ID(false, 2004, "유저 아이디 값을 확인해주세요."),
 
-    USERS_EMPTY_PASSWORD(false, 2010, "비밀번호를 입력해주세요."),
+    USERS_INVALID_PHONE_NUMBER(false, 2010, "전화번호 형식을 확인해주세요."),
     USERS_INVALID_PASSWORD(false, 2011, "비밀번호 형식을 확인해주세요."),
+    USERS_INVALID_EMAIL(false, 2012, "이메일 형식을 확인해주세요."),
 
-    USERS_EMPTY_EMAIL(false, 2020, "이메일을 입력해주세요."),
-    USERS_INVALID_EMAIL(false, 2021, "이메일 형식을 확인해주세요."),
-    USERS_EXISTS_EMAIL(false, 2022,"중복된 이메일입니다."),
-    USERS_EXISTS_PHONE_NUMBER(false, 2023,"중복된 전화번호입니다."),
+    USERS_EXISTS_EMAIL(false, 2030,"중복된 이메일입니다."),
+    USERS_EXISTS_PHONE_NUMBER(false, 2031,"중복된 전화번호입니다."),
 
-    POSTS_INVALID_CONTENTS(false, 2030, "내용의 글자수를 확인해주세요."),
-    EMPTY_POST_ID(false, 2031, "게시물 아이디 값을 확인해주세요."),
+    POSTS_INVALID_CONTENTS(false, 2040, "내용의 글자수를 확인해주세요."),
+    EMPTY_POST_ID(false, 2041, "게시물 아이디 값을 확인해주세요."),
 
 
     /**
