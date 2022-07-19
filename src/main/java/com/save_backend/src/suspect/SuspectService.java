@@ -47,7 +47,7 @@ public class SuspectService {
     public PatchSuspectRes modifyCertainSuspect(int suspectIdx, PatchSuspectReq patchSuspectReq) throws BaseException {
         // 학대의심자 존재여부(+ACTIVE 상태인지 확인)
         if(suspectProvider.checkSuspect(suspectIdx)==0){
-            throw new BaseException(NOT_EXIST_CHILD);
+            throw new BaseException(NOT_EXIST_SUSPECT);
         }
 
         try{
@@ -65,7 +65,7 @@ public class SuspectService {
     public void deleteCertainSuspect(int suspectIdx) throws BaseException {
         // 학대의심자 존재여부
         if(suspectProvider.checkSuspect(suspectIdx)==0){
-            throw new BaseException(NOT_EXIST_CHILD);
+            throw new BaseException(NOT_EXIST_SUSPECT);
         }
 
         try{

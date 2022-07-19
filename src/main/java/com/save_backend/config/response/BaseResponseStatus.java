@@ -39,7 +39,7 @@ public enum BaseResponseStatus {
 
     // 존재하지 않는 정보
     NOT_EXIST_CHILD(false,2060,"존재하지 않거나 삭제된 아동에 대한 접근입니다."),
-    NOT_EXIST_SUSPECT(false,2060,"존재하지 않거나 삭제된 학대행위자에 대한 접근입니다."),
+    NOT_EXIST_SUSPECT(false,2061,"존재하지 않거나 삭제된 학대행위자에 대한 접근입니다."),
 
     /**
      * 3000 : Response오류

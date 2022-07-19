@@ -103,10 +103,10 @@ public class SuspectDao {
     }
 
 
-        /**
-         * Validation
-         * 존재 여부 확인 = 인덱스 확인 + status가 ACTIVE인지 확인
-         */
+    /**
+     * Validation
+     * 존재 여부 확인 = 인덱스 확인 + status가 ACTIVE인지 확인
+     */
     public int checkChild(int childIdx){
         String checkChildQuery = "select exists(select child_idx from child where child_idx = ? and status = 'ACTIVE')";
         int checkChildParams = childIdx;
