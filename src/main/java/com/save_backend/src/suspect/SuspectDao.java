@@ -95,10 +95,17 @@ public class SuspectDao {
                 getSuspectByIdxParams);
     }
 
+    public int deleteCertainSuspect(int suspectIdx) {
+        String deleteCertainSuspectQuery = "UPDATE suspect SET status = 'INACTIVE' WHERE suspect_idx = ?";
+        int deleteCertainSuspectParam = suspectIdx;
 
-    /**
-     * Validation
-     */
+        return this.jdbcTemplate.update(deleteCertainSuspectQuery,deleteCertainSuspectParam);
+    }
+
+
+        /**
+         * Validation
+         */
     public int checkChild(int childIdx){
         String checkChildQuery = "select exists(select child_idx from child where child_idx = ?)";
         int checkChildParams = childIdx;

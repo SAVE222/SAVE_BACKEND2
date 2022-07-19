@@ -87,4 +87,20 @@ public class SuspectController {
 
         }
     }
+
+    /**
+     * 4. 학대의심자 정보 삭제 API
+     */
+    @ResponseBody
+    @PatchMapping("/delete/{suspectIdx}")
+    public BaseResponse<String> deleteCertainSuspect(@PathVariable("suspectIdx")int suspectIdx){
+        try {
+            String deleteMessage= "delete success!";
+            suspectService.deleteCertainSuspect(suspectIdx);
+            return new BaseResponse<>(deleteMessage);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+
+        }
+    }
 }
