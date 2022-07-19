@@ -3,6 +3,7 @@ package com.save_backend.src.child;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.src.child.model.GetChildInfoRes;
+import com.save_backend.src.child.model.PatchChildRes;
 import com.save_backend.src.child.model.PostChildReq;
 import com.save_backend.src.child.model.PostChildRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +67,20 @@ public class ChildController {
             return new BaseResponse<>(postChildRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+
+    //아동 삭제 api
+    @ResponseBody
+    @PatchMapping("/{childIdx}/status")
+    public BaseResponse<PatchChildRes> deleteChild(@PathVariable("childIdx") int childIdx) {
+        try {
+            PatchChildRes patchChildRes = childService.deleteChild(childIdx);
+            return new BaseResponse<>(patchChildRes);
+        } catch (BaseException exception) {
+            System.out.println("exception = " + exception);
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
 }

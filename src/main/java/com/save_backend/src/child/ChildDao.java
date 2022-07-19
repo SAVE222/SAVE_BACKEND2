@@ -1,6 +1,7 @@
 package com.save_backend.src.child;
 
 import com.save_backend.src.child.model.GetChildInfoRes;
+import com.save_backend.src.child.model.PatchChildRes;
 import com.save_backend.src.child.model.PostChildReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -50,5 +51,25 @@ public class ChildDao {
         String checkUserQuery = "select exists(select user_idx from user where user_idx = ?)";
         int checkUserParams = userIdx;
         return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
+    }
+
+    public PatchChildRes deleteChild(int childIdx) {
+        String getChildInfoByIdxQuery =
+                "select child_name, child_gender, child_age, child_address, child_detail_address from child where child_idx=?;";
+
+        String deleteChlidQuery = "update child set status = 'INACTIVE' where child_idx = ?";
+        int deleteChildParam = childIdx;
+
+        this.jdbcTemplate.update(deleteChlidQuery, deleteChildParam);
+
+        return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
+                (rs, rowNum) -> new PatchChildRes(
+                        rs.getString("child_name"),
+                        rs.getString("child_gender"),
+                        rs.getString("child_age"),
+                        rs.getString("child_address"),
+                        rs.getString("child_detail_address"),
+                        "아동 삭제가 완료되었습니다."
+                ), deleteChildParam);
     }
 }

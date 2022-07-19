@@ -1,6 +1,7 @@
 package com.save_backend.src.child;
 
 import com.save_backend.config.exception.BaseException;
+import com.save_backend.src.child.model.PatchChildRes;
 import com.save_backend.src.child.model.PostChildReq;
 import com.save_backend.src.child.model.PostChildRes;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,15 @@ public class ChildService {
             int childIdx = childDao.insertChild(postChildReq);
             return new PostChildRes(childIdx);
         } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public PatchChildRes deleteChild(int childIdx) throws BaseException {
+        try{
+            return childDao.deleteChild(childIdx);
+        }catch(Exception exception){
+            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }
