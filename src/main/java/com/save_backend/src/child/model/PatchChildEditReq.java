@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PatchChildRes {
+public class PatchChildEditReq {
     private String name;
+    private boolean isCertain;
     private String gender;
     private String age;
     private String address;
     private String detailAddress;
-    private String deleteChild;
 }

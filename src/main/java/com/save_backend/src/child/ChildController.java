@@ -2,11 +2,7 @@ package com.save_backend.src.child;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
-import com.save_backend.src.child.model.GetChildInfoRes;
-import com.save_backend.src.child.model.PatchChildRes;
-import com.save_backend.src.child.model.PostChildReq;
-import com.save_backend.src.child.model.PostChildRes;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.save_backend.src.child.model.*;
 import org.springframework.web.bind.annotation.*;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
@@ -71,13 +67,43 @@ public class ChildController {
     }
 
 
+    //아동 수정 api
+    @ResponseBody
+    @PatchMapping("/{childIdx}")
+    public BaseResponse<PatchChildEditRes> modifyPost(@PathVariable("childIdx") int childIdx, @RequestBody PatchChildEditReq patchChildEditReq){
+        if (patchChildEditReq.getName() == null) {
+            return new BaseResponse<>(POST_CHILD_EMPTY_NAME);
+        }
+        if (patchChildEditReq.getGender() == null) {
+            return new BaseResponse<>(POST_CHILD_EMPTY_GENDER);
+        }
+        if (patchChildEditReq.getAge() == null) {
+            return new BaseResponse<>(POST_CHILD_EMPTY_AGE);
+        }
+        if (patchChildEditReq.getAddress() == null) {
+            return new BaseResponse<>(POST_CHILD_EMPTY_ADDRESS);
+        }
+        if (patchChildEditReq.getDetailAddress() == null) {
+            return new BaseResponse<>(POST_CHILD_EMPTY_DETAIL_ADDRESS);
+        }
+        try {
+            PatchChildEditRes patchChildEditRes = childService.modifyChild(childIdx, patchChildEditReq);
+            return new BaseResponse<>(patchChildEditRes);
+        } catch (BaseException exception){
+            System.out.println("exception = " + exception);
+            return new BaseResponse<>(exception.getStatus());
+
+        }
+    }
+
+
     //아동 삭제 api
     @ResponseBody
     @PatchMapping("/{childIdx}/status")
-    public BaseResponse<PatchChildRes> deleteChild(@PathVariable("childIdx") int childIdx) {
+    public BaseResponse<PatchChildDelRes> deleteChild(@PathVariable("childIdx") int childIdx) {
         try {
-            PatchChildRes patchChildRes = childService.deleteChild(childIdx);
-            return new BaseResponse<>(patchChildRes);
+            PatchChildDelRes patchChildDelRes = childService.deleteChild(childIdx);
+            return new BaseResponse<>(patchChildDelRes);
         } catch (BaseException exception) {
             System.out.println("exception = " + exception);
             return new BaseResponse<>((exception.getStatus()));

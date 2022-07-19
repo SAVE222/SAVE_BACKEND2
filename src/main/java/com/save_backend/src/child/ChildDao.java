@@ -1,8 +1,6 @@
 package com.save_backend.src.child;
 
-import com.save_backend.src.child.model.GetChildInfoRes;
-import com.save_backend.src.child.model.PatchChildRes;
-import com.save_backend.src.child.model.PostChildReq;
+import com.save_backend.src.child.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -53,7 +51,7 @@ public class ChildDao {
         return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
     }
 
-    public PatchChildRes deleteChild(int childIdx) {
+    public PatchChildDelRes deleteChild(int childIdx) {
         String getChildInfoByIdxQuery =
                 "select child_name, child_gender, child_age, child_address, child_detail_address from child where child_idx=?;";
 
@@ -63,7 +61,7 @@ public class ChildDao {
         this.jdbcTemplate.update(deleteChlidQuery, deleteChildParam);
 
         return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
-                (rs, rowNum) -> new PatchChildRes(
+                (rs, rowNum) -> new PatchChildDelRes(
                         rs.getString("child_name"),
                         rs.getString("child_gender"),
                         rs.getString("child_age"),
@@ -71,5 +69,47 @@ public class ChildDao {
                         rs.getString("child_detail_address"),
                         "아동 삭제가 완료되었습니다."
                 ), deleteChildParam);
+    }
+
+    public int checkChild(int childIdx){
+        String checkChildQuery = "select exists(select child_idx from child where child_idx = ?)";
+        int checkChildParams = childIdx;
+        return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
+    }
+
+
+    public PatchChildEditRes modifyChild(int childIdx, PatchChildEditReq patchChildEditReq){
+        String modifyChildQuery = "UPDATE child\n" +
+                "SET child_name = ?, is_certain = ?, child_gender = ?,\n" +
+                "    child_age = ?, child_address = ?, child_detail_address = ?," +
+                "edit_date = current_date\n" +
+                "WHERE child_idx = ?;";
+        Object[] modifyChildParams = new Object[]{
+                patchChildEditReq.getName(),
+                patchChildEditReq.isCertain(),
+                patchChildEditReq.getGender(),
+                patchChildEditReq.getAge(),
+                patchChildEditReq.getAddress(),
+                patchChildEditReq.getDetailAddress(),
+                childIdx
+        };
+
+        this.jdbcTemplate.update(modifyChildQuery, modifyChildParams);
+
+        String modifyChildResQuery = "SELECT\n" +
+                "    child_name, is_certain, child_gender, child_age, child_address, child_detail_address\n" +
+                "FROM child WHERE child_idx = ?;";
+        int modifyChildResParams = childIdx;
+        return this.jdbcTemplate.queryForObject(modifyChildResQuery,
+                (rs, rowNum) -> new PatchChildEditRes(
+                        childIdx,
+                        rs.getString("child_name"),
+                        rs.getString("is_certain"),
+                        rs.getString("child_gender"),
+                        rs.getString("child_age"),
+                        rs.getString("child_address"),
+                        rs.getString("child_detail_address")
+                ),
+                modifyChildResParams);
     }
 }

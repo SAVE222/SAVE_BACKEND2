@@ -1,16 +1,11 @@
 package com.save_backend.src.child;
 
 import com.save_backend.config.exception.BaseException;
-import com.save_backend.src.child.model.PatchChildRes;
-import com.save_backend.src.child.model.PostChildReq;
-import com.save_backend.src.child.model.PostChildRes;
+import com.save_backend.src.child.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.save_backend.config.response.BaseResponseStatus;
-
-import static com.save_backend.config.response.BaseResponseStatus.DATABASE_ERROR;
-import static com.save_backend.config.response.BaseResponseStatus.NOT_EXIST_USER;
+import static com.save_backend.config.response.BaseResponseStatus.*;
 
 @Service
 public class ChildService {
@@ -37,7 +32,21 @@ public class ChildService {
         }
     }
 
-    public PatchChildRes deleteChild(int childIdx) throws BaseException {
+    public PatchChildEditRes modifyChild(int childIdx, PatchChildEditReq patchChildEditReq) throws BaseException {
+        //아동 존재 확인
+        if(childProvider.checkChild(childIdx) ==0){
+            throw new BaseException(NOT_EXIST_CHILD);
+        }
+        try{
+            PatchChildEditRes patchChildEditRes = childDao.modifyChild(childIdx, patchChildEditReq);
+            return patchChildEditRes;
+        } catch (Exception exception) {
+            System.out.println("exception = " + exception);
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public PatchChildDelRes deleteChild(int childIdx) throws BaseException {
         try{
             return childDao.deleteChild(childIdx);
         }catch(Exception exception){
@@ -45,4 +54,5 @@ public class ChildService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
 }

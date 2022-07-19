@@ -31,4 +31,12 @@ public class ChildProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public int checkChild(int childIdx) throws BaseException {
+        try{
+            return childDao.checkChild(childIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
