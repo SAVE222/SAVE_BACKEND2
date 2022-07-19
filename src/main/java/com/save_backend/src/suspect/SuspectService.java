@@ -27,7 +27,7 @@ public class SuspectService {
      * 1. 학대의심자 정보 생성
      */
     public PostSuspectRes createSuspect(PostSuspectReq postSuspectReq) throws BaseException {
-        // 아동 존재여부
+        // 아동 존재여부(+ACTIVE 상태인지 확인하기)
         if(suspectProvider.checkChild(postSuspectReq.getChildIdx())==0){
             throw new BaseException(NOT_EXIST_CHILD);
         }
@@ -45,7 +45,7 @@ public class SuspectService {
      * 3. 학대의심자 정보 수정
      */
     public PatchSuspectRes modifyCertainSuspect(int suspectIdx, PatchSuspectReq patchSuspectReq) throws BaseException {
-        // 학대의심자 존재여부
+        // 학대의심자 존재여부(+ACTIVE 상태인지 확인)
         if(suspectProvider.checkSuspect(suspectIdx)==0){
             throw new BaseException(NOT_EXIST_CHILD);
         }

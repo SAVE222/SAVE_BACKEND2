@@ -105,14 +105,15 @@ public class SuspectDao {
 
         /**
          * Validation
+         * 존재 여부 확인 = 인덱스 확인 + status가 ACTIVE인지 확인
          */
     public int checkChild(int childIdx){
-        String checkChildQuery = "select exists(select child_idx from child where child_idx = ?)";
+        String checkChildQuery = "select exists(select child_idx from child where child_idx = ? and status = 'ACTIVE')";
         int checkChildParams = childIdx;
         return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }
     public int checkSuspect(int suspectIdx){
-        String checkChildQuery = "select exists(select suspect_idx from suspect where suspect_idx = ?)";
+        String checkChildQuery = "select exists(select suspect_idx from suspect where suspect_idx = ? and status = 'ACTIVE')";
         int checkChildParams = suspectIdx;
         return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }

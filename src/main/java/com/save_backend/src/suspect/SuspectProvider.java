@@ -7,6 +7,7 @@ import com.save_backend.src.suspect.model.GetSuspectRes;
 import org.springframework.stereotype.Service;
 
 import static com.save_backend.config.response.BaseResponseStatus.DATABASE_ERROR;
+import static com.save_backend.config.response.BaseResponseStatus.NOT_EXIST_SUSPECT;
 
 @Service
 public class SuspectProvider {
@@ -20,6 +21,10 @@ public class SuspectProvider {
      * 2. 학대의심자 정보 조회
      */
     public GetSuspectRes getSuspectByIdx(int suspectIdx) throws BaseException{
+        // 해당 학대의심자가 존재하는지 확인하기(ACTIVE 상태인지 확인)
+        if(checkSuspect(suspectIdx)==0){
+            throw new BaseException(NOT_EXIST_SUSPECT);
+        }
         try {
             GetSuspectRes getSuspectRes = suspectDao.getSuspectByIdx(suspectIdx);
             return getSuspectRes;
