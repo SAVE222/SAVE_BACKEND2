@@ -3,11 +3,11 @@ package com.save_backend.src.suspect;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
-import com.save_backend.src.suspect.model.GetSuspectRes;
-import com.save_backend.src.suspect.model.PostSuspectReq;
-import com.save_backend.src.suspect.model.PostSuspectRes;
+import com.save_backend.src.suspect.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
 
@@ -73,5 +73,18 @@ public class SuspectController {
         }
     }
 
+    /**
+     * 3. 학대의심자 정보 수정 API
+     */
+    @ResponseBody
+    @PatchMapping("/{suspectIdx}")
+    public BaseResponse<PatchSuspectRes> modifyCertainSuspect(@PathVariable("suspectIdx")int suspectIdx, @RequestBody PatchSuspectReq patchSuspectReq){
+        try {
+            PatchSuspectRes patchSuspectRes = suspectService.modifyCertainSuspect(suspectIdx, patchSuspectReq);
+            return new BaseResponse<>(patchSuspectRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
 
+        }
+    }
 }

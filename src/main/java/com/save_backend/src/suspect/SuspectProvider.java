@@ -16,6 +16,9 @@ public class SuspectProvider {
         this.suspectDao = suspectDao;
     }
 
+    /**
+     * 2. 학대의심자 정보 조회
+     */
     public GetSuspectRes getSuspectByIdx(int suspectIdx) throws BaseException{
         try {
             GetSuspectRes getSuspectRes = suspectDao.getSuspectByIdx(suspectIdx);
@@ -32,6 +35,13 @@ public class SuspectProvider {
     public int checkChild(int childIdx) throws BaseException {
         try{
             return suspectDao.checkChild(childIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+    public int checkSuspect(int suspectIdx) throws BaseException {
+        try{
+            return suspectDao.checkSuspect(suspectIdx);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
