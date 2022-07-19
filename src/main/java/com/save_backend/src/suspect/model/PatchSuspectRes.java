@@ -9,12 +9,12 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PatchSuspectRes {
     // 수정된 후 모든 정보에 대한 결과 반환
-    int suspectIdx;
-    String suspectName;
-    String suspectGender;
-    String suspectAge;
-    String suspectAddress;
-    String suspectDetailAddress;
-    String relationWithChild;
-    String suspectEtc;
+    private int suspectIdx;
+    private String suspectName;
+    private String suspectGender;
+    private String suspectAge;
+    private String suspectAddress;
+    private String suspectDetailAddress;
+    private String relationWithChild;
+    private String suspectEtc;
 }

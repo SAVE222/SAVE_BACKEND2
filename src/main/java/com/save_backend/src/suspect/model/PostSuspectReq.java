@@ -9,12 +9,12 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PostSuspectReq {
-    int childIdx; // 필
-    String suspectName; // 선
-    String suspectGender; // 필
-    String suspectAge;  // 필
-    String suspectAddress; // 선
-    String suspectDetailAddress; // 선
-    String relationWithChild; //필
-    String suspectEtc; // 선
+    private int childIdx; // 필
+    private String suspectName; // 선
+    private String suspectGender; // 필
+    private String suspectAge;  // 필
+    private String suspectAddress; // 선
+    private String suspectDetailAddress; // 선
+    private String relationWithChild; //필
+    private String suspectEtc; // 선
 }

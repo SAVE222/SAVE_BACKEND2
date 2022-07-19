@@ -9,11 +9,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PatchSuspectReq {
     // 수정가능한 모든 정보에 대한 필드
-    String suspectName;
-    String suspectGender;
-    String suspectAge;
-    String suspectAddress;
-    String suspectDetailAddress;
-    String relationWithChild;
-    String suspectEtc;
+    private String suspectName;
+    private String suspectGender;
+    private String suspectAge;
+    private String suspectAddress;
+    private String suspectDetailAddress;
+    private String relationWithChild;
+    private String suspectEtc;
 }

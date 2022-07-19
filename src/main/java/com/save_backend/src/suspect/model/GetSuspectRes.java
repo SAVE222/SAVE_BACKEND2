@@ -8,10 +8,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetSuspectRes {
-    String suspectName;
-    String suspectGender;
-    String suspectAge;
-    String suspectAddress;
-    String suspectDetailAddress;
-    String suspectEtc;
+    private String suspectName;
+    private String suspectGender;
+    private String suspectAge;
+    private String suspectAddress;
+    private String suspectDetailAddress;
+    private String suspectEtc;
 }

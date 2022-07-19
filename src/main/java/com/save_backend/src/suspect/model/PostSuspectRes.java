@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class PostSuspectRes {
-    int suspectIdx;
+    private int suspectIdx;
 }
