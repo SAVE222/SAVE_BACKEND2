@@ -22,9 +22,11 @@ public enum BaseResponseStatus {
     USERS_EMPTY_USER_ID(false, 2004, "유저 아이디 값을 확인해주세요."),
 
     USERS_EMPTY_PASSWORD(false, 2010, "비밀번호를 입력해주세요."),
+
     USERS_INVALID_PASSWORD(false, 2011, "비밀번호 형식을 확인해주세요."),
     USERS_INVALID_PHONE_NUMBER(false, 2012, "전화번호 형식을 확인해주세요."),
     USERS_INACTIVE_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
+    INVALID_GENDER(false,2014,"유효하지 않은 성별값입니다."),
 
     USERS_EMPTY_EMAIL(false, 2020, "이메일을 입력해주세요."),
     USERS_INVALID_EMAIL(false, 2021, "이메일 형식을 확인해주세요."),
@@ -34,11 +36,13 @@ public enum BaseResponseStatus {
     POSTS_INVALID_CONTENTS(false, 2030, "내용의 글자수를 확인해주세요."),
     EMPTY_POST_ID(false, 2031, "게시물 아이디 값을 확인해주세요."),
 
+
     // 필수 정보 누락
     MISSING_ESSENTIAL_CHILD_INDEX(false,2050,"누락된 해당 아동의 번호는 필수값입니다."),
     MISSING_ESSENTIAL_GENDER(false,2051,"누락된 성별에 대한 정보는 필수값입니다."),
     MISSING_ESSENTIAL_AGE(false,2052,"누락된 나이 정보가 필수값입니다."),
     MISSING_ESSENTIAL_RELATION_WITH_CHILD(false,2053,"누락된 아동과의 관계 정보는 필수값입니다."),
+
 
     // 존재하지 않는 정보
     NOT_EXIST_CHILD(false,2060,"존재하지 않거나 삭제된 아동에 대한 접근입니다."),
@@ -76,7 +80,6 @@ public enum BaseResponseStatus {
     POST_CHILD_EMPTY_GENDER(false, 6002, "아동 성별을 입력해주세요."),
     POST_CHILD_EMPTY_AGE(false, 6003, "아동 나이를 입력해주세요."),
     POST_CHILD_EMPTY_ADDRESS(false, 6004, "아동 주소를 입력해주세요."),
-    POST_CHILD_EMPTY_DETAIL_ADDRESS(false, 6005, "아동 상세주소를 입력해주세요."),
     NOT_EXIST_USER(false, 6006, "유저가 존재하지 않습니다.");
 
     private final boolean isSuccess;
