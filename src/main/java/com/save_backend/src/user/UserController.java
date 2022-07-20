@@ -59,7 +59,7 @@ public class UserController {
      * 회원정보 조회
      * (비밀번호 제외)
      */
-    @GetMapping("/info/{userIdx}")
+    @GetMapping("/{userIdx}")
     public BaseResponse<GetUserInfoRes> getUserInfo(@PathVariable int userIdx){
         try{
             return userProvider.getUserInfo(userIdx);
@@ -73,8 +73,8 @@ public class UserController {
      * 회원정보 수정
      * (조회 API를 먼저 호출하여 정보를 받아온 뒤 호출)
      */
-    @PutMapping("/info")
-    public BaseResponse<PutUserInfoRes> modifyUserInfo(@RequestBody PutUserInfoReq putUserInfoReq){
+    @PutMapping("/{userIdx}")
+    public BaseResponse<PutUserInfoRes> modifyUserInfo(@PathVariable int userIdx, @RequestBody PutUserInfoReq putUserInfoReq){
         //공란인 경우 처리
         if(putUserInfoReq.getName() == null || putUserInfoReq.getPhone() == null || putUserInfoReq.getEmail() == null){
             return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
@@ -89,7 +89,7 @@ public class UserController {
         }
 
         try{
-            PutUserInfoRes putUserInfoRes = userService.modifyUserInfo(putUserInfoReq);
+            PutUserInfoRes putUserInfoRes = userService.modifyUserInfo(userIdx, putUserInfoReq);
             return new BaseResponse<>(putUserInfoRes);
         }catch(BaseException e){
             return new BaseResponse<>(e.getStatus());
@@ -100,7 +100,7 @@ public class UserController {
     /**
      * 회원탈퇴
      */
-    @PatchMapping("/{userIdx}")
+    @PatchMapping("/status/{userIdx}")
     public BaseResponse<PatchUserRes> deleteUser(@PathVariable int userIdx){
         try{
             PatchUserRes patchUserRes = userService.deleteUser(userIdx);

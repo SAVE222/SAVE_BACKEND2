@@ -64,9 +64,9 @@ public class UserDao {
                 checkUserParam);
     }
 
-    public PutUserInfoRes modifyUserInfo(PutUserInfoReq putUserInfoReq) {
+    public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq putUserInfoReq) {
         String modifyUserInfoQuery = "update user set user_name = ?, user_phone_number = ?, email = ? where user_idx = ?";
-        Object[] modifyUserInfoParams = new Object[]{putUserInfoReq.getName(), putUserInfoReq.getPhone(), putUserInfoReq.getEmail(), putUserInfoReq.getUserIdx()};
+        Object[] modifyUserInfoParams = new Object[]{putUserInfoReq.getName(), putUserInfoReq.getPhone(), putUserInfoReq.getEmail(), userIdx};
 
         this.jdbcTemplate.update(modifyUserInfoQuery, modifyUserInfoParams);
 

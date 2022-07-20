@@ -9,7 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PutUserInfoReq {
 
-    private int userIdx;
     private String name;
     private String phone;
     private String email;
