@@ -15,7 +15,7 @@ public class ValidationRegex {
     }
 
     public static Boolean isValidPassword(String password){
-        String pattern = "^.*(?=^.{8,20}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&+=]).*$"; // 숫자, 문자, 특수문자 포함 8~15자리 이내
+        String pattern = "^.*(?=^.{8,20}$)(?=.*\\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&+=]).*$"; // 숫자, 문자, 특수문자 포함 8~20자리 이내
         return Pattern.matches(pattern, password);
     }
 }
