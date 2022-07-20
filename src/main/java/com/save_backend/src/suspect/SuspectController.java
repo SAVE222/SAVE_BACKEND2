@@ -43,9 +43,8 @@ public class SuspectController {
             if(gender == null) {
                 return new BaseResponse<>(MISSING_ESSENTIAL_GENDER);
             }
-            // 성별은 female,male, unknown
-            if(gender != "female" || gender != "male" || gender != "unknown")
-            {
+            // 성별은 female, male, unknown 중 하나
+            if(!gender.equals("female") && !gender.equals("male") && !gender.equals("unknown")){
                 return new BaseResponse<>(INVALID_GENDER);
             }
             // 나이 필수
@@ -90,9 +89,8 @@ public class SuspectController {
         if(gender == null) {
             return new BaseResponse<>(MISSING_ESSENTIAL_GENDER);
         }
-        // 성별은 female,male, unknown
-        if(gender != "female" || gender != "male" || gender != "unknown")
-        {
+        // 성별은 female, male, unknown 중 하나
+        if(!gender.equals("female") && !gender.equals("male") && !gender.equals("unknown")){
             return new BaseResponse<>(INVALID_GENDER);
         }
         // 나이 필수

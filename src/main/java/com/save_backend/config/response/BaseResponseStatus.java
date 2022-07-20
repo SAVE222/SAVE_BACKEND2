@@ -27,7 +27,7 @@ public enum BaseResponseStatus {
     USERS_INVALID_PHONE_NUMBER(false, 2012, "전화번호 형식을 확인해주세요."),
     USERS_INACTIVE_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
     INVALID_GENDER(false,2014,"유효하지 않은 성별값입니다."),
-        
+
     USERS_EMPTY_EMAIL(false, 2020, "이메일을 입력해주세요."),
     USERS_INVALID_EMAIL(false, 2021, "이메일 형식을 확인해주세요."),
     USERS_EXISTS_EMAIL(false, 2022,"중복된 이메일입니다."),
