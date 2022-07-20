@@ -92,7 +92,7 @@ public class SuspectController {
      * 4. 학대의심자 정보 삭제 API
      */
     @ResponseBody
-    @PatchMapping("/delete/{suspectIdx}")
+    @PatchMapping("/status/{suspectIdx}")
     public BaseResponse<String> deleteCertainSuspect(@PathVariable("suspectIdx")int suspectIdx){
         try {
             String deleteMessage= "delete success!";
