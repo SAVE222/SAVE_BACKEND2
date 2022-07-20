@@ -19,11 +19,9 @@ public class ChildService {
     }
 
     public PostChildRes createChild(PostChildReq postChildReq) throws BaseException {
-
         if(childProvider.checkUser(postChildReq.getUserIdx())==0){
             throw new BaseException(NOT_EXIST_USER);
         }
-
         try{
             int childIdx = childDao.insertChild(postChildReq);
             return new PostChildRes(childIdx);
@@ -41,7 +39,6 @@ public class ChildService {
             PatchChildEditRes patchChildEditRes = childDao.modifyChild(childIdx, patchChildEditReq);
             return patchChildEditRes;
         } catch (Exception exception) {
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }
@@ -50,7 +47,6 @@ public class ChildService {
         try{
             return childDao.deleteChild(childIdx);
         }catch(Exception exception){
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }

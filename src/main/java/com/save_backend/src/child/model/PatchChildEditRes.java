@@ -10,6 +10,7 @@ import lombok.Setter;
 public class PatchChildEditRes {
     private int childIdx;
     private String name;
+    private boolean isCertain;
     private String gender;
     private String age;
     private String address;

@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PatchChildDelRes {
     private String name;
+    private Boolean isCertain;
     private String gender;
     private String age;
     private String address;

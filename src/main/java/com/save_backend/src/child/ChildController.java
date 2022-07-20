@@ -20,20 +20,6 @@ public class ChildController {
         this.childService = childService;
     }
 
-
-    //특정 아동 조회 api
-    @ResponseBody
-    @GetMapping("/{childIdx}")
-    public BaseResponse<GetChildInfoRes> getChildInfoByIdx(@PathVariable("childIdx") int childIdx) {
-        try{
-
-            GetChildInfoRes getChildInfoRes = childProvider.getChildInfoByIdx(childIdx);
-            return new BaseResponse<>(getChildInfoRes);
-        } catch(BaseException exception){
-            return new BaseResponse<>((exception.getStatus()));
-        }
-    }
-
     //아동 생성 api
     @ResponseBody
     @PostMapping("")
@@ -67,6 +53,20 @@ public class ChildController {
     }
 
 
+    //특정 아동 조회 api
+    @ResponseBody
+    @GetMapping("/{childIdx}")
+    public BaseResponse<GetChildInfoRes> getChildInfoByIdx(@PathVariable("childIdx") int childIdx) {
+        try{
+
+            GetChildInfoRes getChildInfoRes = childProvider.getChildInfoByIdx(childIdx);
+            return new BaseResponse<>(getChildInfoRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
     //아동 수정 api
     @ResponseBody
     @PatchMapping("/{childIdx}")
@@ -90,22 +90,19 @@ public class ChildController {
             PatchChildEditRes patchChildEditRes = childService.modifyChild(childIdx, patchChildEditReq);
             return new BaseResponse<>(patchChildEditRes);
         } catch (BaseException exception){
-            System.out.println("exception = " + exception);
             return new BaseResponse<>(exception.getStatus());
-
         }
     }
 
 
     //아동 삭제 api
     @ResponseBody
-    @PatchMapping("/{childIdx}/status")
+    @PatchMapping("/status/{childIdx}")
     public BaseResponse<PatchChildDelRes> deleteChild(@PathVariable("childIdx") int childIdx) {
         try {
             PatchChildDelRes patchChildDelRes = childService.deleteChild(childIdx);
             return new BaseResponse<>(patchChildDelRes);
         } catch (BaseException exception) {
-            System.out.println("exception = " + exception);
             return new BaseResponse<>((exception.getStatus()));
         }
     }

@@ -32,6 +32,7 @@ public class ChildDao {
         );
     }
 
+
     public int insertChild(PostChildReq postChildReq) {
         String insertChildQuery = "insert into child(user_idx, child_name, is_certain, child_gender, child_age, child_address, child_detail_address) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -43,38 +44,6 @@ public class ChildDao {
 
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
-    }
-
-    public int checkUser(int userIdx){
-        String checkUserQuery = "select exists(select user_idx from user where user_idx = ?)";
-        int checkUserParams = userIdx;
-        return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
-    }
-
-    public PatchChildDelRes deleteChild(int childIdx) {
-        String getChildInfoByIdxQuery =
-                "select child_name, child_gender, child_age, child_address, child_detail_address from child where child_idx=?;";
-
-        String deleteChlidQuery = "update child set status = 'INACTIVE' where child_idx = ?";
-        int deleteChildParam = childIdx;
-
-        this.jdbcTemplate.update(deleteChlidQuery, deleteChildParam);
-
-        return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
-                (rs, rowNum) -> new PatchChildDelRes(
-                        rs.getString("child_name"),
-                        rs.getString("child_gender"),
-                        rs.getString("child_age"),
-                        rs.getString("child_address"),
-                        rs.getString("child_detail_address"),
-                        "아동 삭제가 완료되었습니다."
-                ), deleteChildParam);
-    }
-
-    public int checkChild(int childIdx){
-        String checkChildQuery = "select exists(select child_idx from child where child_idx = ?)";
-        int checkChildParams = childIdx;
-        return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }
 
 
@@ -104,12 +73,49 @@ public class ChildDao {
                 (rs, rowNum) -> new PatchChildEditRes(
                         childIdx,
                         rs.getString("child_name"),
-                        rs.getString("is_certain"),
+                        rs.getBoolean("is_certain"),
                         rs.getString("child_gender"),
                         rs.getString("child_age"),
                         rs.getString("child_address"),
-                        rs.getString("child_detail_address")
+                        rs.getString("child_detail_address"),
+                        "아동 수정이 완료되었습니다."
                 ),
                 modifyChildResParams);
+    }
+
+
+    public PatchChildDelRes deleteChild(int childIdx) {
+        String getChildInfoByIdxQuery =
+                "select child_name, is_certain, child_gender, child_age, child_address, child_detail_address from child where child_idx=?;";
+
+        String deleteChlidQuery = "update child set status = 'INACTIVE' where child_idx = ?";
+        int deleteChildParam = childIdx;
+
+        this.jdbcTemplate.update(deleteChlidQuery, deleteChildParam);
+
+        return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
+                (rs, rowNum) -> new PatchChildDelRes(
+                        rs.getString("child_name"),
+                        rs.getBoolean("is_certain"),
+                        rs.getString("child_gender"),
+                        rs.getString("child_age"),
+                        rs.getString("child_address"),
+                        rs.getString("child_detail_address"),
+                        "아동 삭제가 완료되었습니다."
+                ), deleteChildParam);
+    }
+
+
+    public int checkUser(int userIdx){
+        String checkUserQuery = "select exists(select user_idx from user where user_idx = ?)";
+        int checkUserParams = userIdx;
+        return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
+    }
+
+
+    public int checkChild(int childIdx){
+        String checkChildQuery = "select exists(select child_idx from child where child_idx = ?)";
+        int checkChildParams = childIdx;
+        return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }
 }
