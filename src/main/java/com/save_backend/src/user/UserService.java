@@ -63,6 +63,11 @@ public class UserService {
     }
 
     public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq patchUserInfoReq) throws BaseException {
+        //회원 탈퇴 여부 검사
+        if (!isValidUser(userIdx)){
+            throw new BaseException(USERS_INACTIVE_USER_ID);
+        }
+
         //중복 여부 검사
         if (isExistEmail(userIdx, patchUserInfoReq.getEmail())) {
             throw new BaseException(USERS_EXISTS_EMAIL);
@@ -73,6 +78,14 @@ public class UserService {
 
         try{
             return userDao.modifyUserInfo(userIdx, patchUserInfoReq);
+        }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    private boolean isValidUser(int userIdx) throws BaseException {
+        try{
+            return userDao.isActiveUser(userIdx);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
