@@ -18,7 +18,12 @@ public class ChildService {
         this.childProvider = childProvider;
     }
 
+
+    /**
+     * 1. 아동 정보 생성
+     */
     public PostChildRes createChild(PostChildReq postChildReq) throws BaseException {
+        //존재하는 유저(active)에 대한 아동 생성인지 확인
         if(childProvider.checkUser(postChildReq.getUserIdx())==0){
             throw new BaseException(NOT_EXIST_USER);
         }
@@ -30,8 +35,12 @@ public class ChildService {
         }
     }
 
+
+    /**
+     * 3. 아동 정보 수정
+     */
     public PatchChildEditRes modifyChild(int childIdx, PatchChildEditReq patchChildEditReq) throws BaseException {
-        //아동 존재 확인
+        //존재하는 아동(active)에 대한 modify인지 확인
         if(childProvider.checkChild(childIdx) ==0){
             throw new BaseException(NOT_EXIST_CHILD);
         }
@@ -43,7 +52,15 @@ public class ChildService {
         }
     }
 
+
+    /**
+     * 4. 아동 삭제 (active -> inactive)
+     */
     public PatchChildDelRes deleteChild(int childIdx) throws BaseException {
+        //존재하는 아동(active)에 대한 delete인지 확인
+        if(childProvider.checkChild(childIdx)==0){
+            throw new BaseException(NOT_EXIST_CHILD);
+        }
         try{
             return childDao.deleteChild(childIdx);
         }catch(Exception exception){
