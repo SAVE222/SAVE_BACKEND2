@@ -23,6 +23,8 @@ public enum BaseResponseStatus {
 
     USERS_EMPTY_PASSWORD(false, 2010, "비밀번호를 입력해주세요."),
     USERS_INVALID_PASSWORD(false, 2011, "비밀번호 형식을 확인해주세요."),
+    USERS_INVALID_PHONE_NUMBER(false, 2012, "전화번호 형식을 확인해주세요."),
+    USERS_INACTIVE_USER_ID(false, 2013, "유저 아이디 값을 확인해주세요."),
 
     USERS_EMPTY_EMAIL(false, 2020, "이메일을 입력해주세요."),
     USERS_INVALID_EMAIL(false, 2021, "이메일 형식을 확인해주세요."),
