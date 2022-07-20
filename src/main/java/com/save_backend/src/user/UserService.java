@@ -47,6 +47,7 @@ public class UserService {
     // 회원가입 시 이용
     private boolean isExistPhone(String phone) throws BaseException{
         try{
+            if(phone == null) return false;
             return userDao.isExistPhone(phone);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
@@ -56,6 +57,7 @@ public class UserService {
     // 회원가입 시 이용
     private boolean isExistEmail(String email) throws BaseException{
         try{
+            if(email == null) return false;
             return userDao.isExistEmail(email);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
@@ -94,6 +96,7 @@ public class UserService {
     // 회원정보 수정 시 이용
     private boolean isExistPhone(int userIdx, String phone) throws BaseException{
         try{
+            if(phone == null) return false;
             return userDao.isExistPhone(userIdx, phone);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
@@ -103,6 +106,7 @@ public class UserService {
     // 회원정보 수정 시 이용
     private boolean isExistEmail(int userIdx, String email) throws BaseException{
         try{
+            if(email == null) return false;
             return userDao.isExistEmail(userIdx, email);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);

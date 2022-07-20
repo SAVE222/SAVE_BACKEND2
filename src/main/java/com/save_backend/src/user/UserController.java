@@ -31,16 +31,18 @@ public class UserController {
     @PostMapping("")
     public BaseResponse<PostUserRes> generalSignUp(@RequestBody PostUserReq postUserReq){
         //공란인 경우 처리
-        if(postUserReq.getIsSnsAuth() == 1 || postUserReq.getName() == null || postUserReq.getPhone() == null || postUserReq.getEmail() == null || postUserReq.getPassword() == null){
+        if(postUserReq.getIsSnsAuth() == 1 || postUserReq.getName() == null || postUserReq.getPhone() == null || postUserReq.getPassword() == null){
             return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
         }
 
         //유효하지 않은 형식인 경우 처리
+        if(postUserReq.getEmail() != null){
+            if(!isValidEmail(postUserReq.getEmail())){
+                return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_EMAIL);
+            }
+        }
         if(!isValidPhone(postUserReq.getPhone())){
             return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_PHONE_NUMBER);
-        }
-        if(!isValidEmail(postUserReq.getEmail())){
-            return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_EMAIL);
         }
         if(!isValidPassword(postUserReq.getPassword())){
             return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_PASSWORD);
@@ -76,16 +78,18 @@ public class UserController {
     @PutMapping("/{userIdx}")
     public BaseResponse<PutUserInfoRes> modifyUserInfo(@PathVariable int userIdx, @RequestBody PutUserInfoReq putUserInfoReq){
         //공란인 경우 처리
-        if(putUserInfoReq.getName() == null || putUserInfoReq.getPhone() == null || putUserInfoReq.getEmail() == null){
+        if(putUserInfoReq.getName() == null || putUserInfoReq.getPhone() == null){
             return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
         }
 
         //유효하지 않은 형식인 경우 처리
+        if(putUserInfoReq.getEmail() != null){
+            if(!isValidEmail(putUserInfoReq.getEmail())){
+                return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_EMAIL);
+            }
+        }
         if(!isValidPhone(putUserInfoReq.getPhone())){
             return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_PHONE_NUMBER);
-        }
-        if(!isValidEmail(putUserInfoReq.getEmail())){
-            return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_EMAIL);
         }
 
         try{
