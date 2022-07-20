@@ -80,7 +80,6 @@ public enum BaseResponseStatus {
     POST_CHILD_EMPTY_GENDER(false, 6002, "아동 성별을 입력해주세요."),
     POST_CHILD_EMPTY_AGE(false, 6003, "아동 나이를 입력해주세요."),
     POST_CHILD_EMPTY_ADDRESS(false, 6004, "아동 주소를 입력해주세요."),
-    POST_CHILD_EMPTY_DETAIL_ADDRESS(false, 6005, "아동 상세주소를 입력해주세요."),
     NOT_EXIST_USER(false, 6006, "유저가 존재하지 않습니다.");
 
     private final boolean isSuccess;
