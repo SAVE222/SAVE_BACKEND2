@@ -107,7 +107,10 @@ public class ChildDao {
                 ), deleteChildParam);
     }
 
-
+    /**
+     * Validation
+     * 아동, 유저 존재(active)하는지 idx 확인
+     */
     public int checkUser(int userIdx){
         String checkUserQuery = "select exists(select user_idx from user where user_idx = ? and status = 'ACTIVE')";
         int checkUserParams = userIdx;

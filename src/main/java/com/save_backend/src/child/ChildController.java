@@ -20,7 +20,9 @@ public class ChildController {
         this.childService = childService;
     }
 
-    //아동 생성 api
+    /**
+     * 1. 아동 정보 생성 api
+     */
     @ResponseBody
     @PostMapping("")
     public BaseResponse<PostChildRes> createChild(@RequestBody PostChildReq postChildReq) {
@@ -53,7 +55,9 @@ public class ChildController {
     }
 
 
-    //특정 아동 조회 api
+    /**
+     * 2. 아동 정보 조회 api
+     */
     @ResponseBody
     @GetMapping("/{childIdx}")
     public BaseResponse<GetChildInfoRes> getChildInfoByIdx(@PathVariable("childIdx") int childIdx) {
@@ -67,7 +71,9 @@ public class ChildController {
     }
 
 
-    //아동 수정 api
+    /**
+     * 3. 아동 정보 수정 api
+     */
     @ResponseBody
     @PatchMapping("/{childIdx}")
     public BaseResponse<PatchChildEditRes> modifyChild(@PathVariable("childIdx") int childIdx, @RequestBody PatchChildEditReq patchChildEditReq){
@@ -95,7 +101,9 @@ public class ChildController {
     }
 
 
-    //아동 삭제 api
+    /**
+     * 4. 아동 정보 삭제 api
+     */
     @ResponseBody
     @PatchMapping("/status/{childIdx}")
     public BaseResponse<PatchChildDelRes> deleteChild(@PathVariable("childIdx") int childIdx) {
