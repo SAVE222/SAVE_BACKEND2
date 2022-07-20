@@ -17,21 +17,6 @@ public class ChildDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public GetChildInfoRes getChildInfoByIdx(int childIdx){
-        String getChildInfoByIdxQuery =
-                "select child_name, is_certain, child_gender, child_age, child_address, child_detail_address from child where child_idx=?;";
-        int getChildInfoByIdxParams = childIdx;
-        return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
-                (rs, rowNum) -> new GetChildInfoRes (
-                        rs.getString("child_name"),
-                        rs.getString("child_gender"),
-                        rs.getString("child_age"),
-                        rs.getString("child_address"),
-                        rs.getString("child_detail_address")
-                ), getChildInfoByIdxParams
-        );
-    }
-
 
     public int insertChild(PostChildReq postChildReq) {
         String insertChildQuery = "insert into child(user_idx, child_name, is_certain, child_gender, child_age, child_address, child_detail_address) "
@@ -44,6 +29,23 @@ public class ChildDao {
 
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
+
+
+    public GetChildInfoRes getChildInfoByIdx(int childIdx){
+        String getChildInfoByIdxQuery =
+                "select child_name, is_certain, child_gender, child_age, child_address, child_detail_address " +
+                        "from child where child_idx=?;";
+        int getChildInfoByIdxParams = childIdx;
+        return this.jdbcTemplate.queryForObject(getChildInfoByIdxQuery,
+                (rs, rowNum) -> new GetChildInfoRes (
+                        rs.getString("child_name"),
+                        rs.getString("child_gender"),
+                        rs.getString("child_age"),
+                        rs.getString("child_address"),
+                        rs.getString("child_detail_address")
+                ), getChildInfoByIdxParams
+        );
     }
 
 
@@ -107,14 +109,14 @@ public class ChildDao {
 
 
     public int checkUser(int userIdx){
-        String checkUserQuery = "select exists(select user_idx from user where user_idx = ?)";
+        String checkUserQuery = "select exists(select user_idx from user where user_idx = ? and status = 'ACTIVE')";
         int checkUserParams = userIdx;
         return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
     }
 
 
     public int checkChild(int childIdx){
-        String checkChildQuery = "select exists(select child_idx from child where child_idx = ?)";
+        String checkChildQuery = "select exists(select child_idx from child where child_idx = ? and status = 'ACTIVE')";
         int checkChildParams = childIdx;
         return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }

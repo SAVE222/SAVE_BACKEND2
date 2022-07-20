@@ -70,7 +70,7 @@ public class ChildController {
     //아동 수정 api
     @ResponseBody
     @PatchMapping("/{childIdx}")
-    public BaseResponse<PatchChildEditRes> modifyPost(@PathVariable("childIdx") int childIdx, @RequestBody PatchChildEditReq patchChildEditReq){
+    public BaseResponse<PatchChildEditRes> modifyChild(@PathVariable("childIdx") int childIdx, @RequestBody PatchChildEditReq patchChildEditReq){
         if (patchChildEditReq.getName() == null) {
             return new BaseResponse<>(POST_CHILD_EMPTY_NAME);
         }
