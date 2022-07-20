@@ -44,27 +44,19 @@ public class UserService {
         }
     }
 
+    // 회원가입 시 이용
     private boolean isExistPhone(String phone) throws BaseException{
         try{
-            if(userDao.isExistPhone(phone) == 1) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return userDao.isExistPhone(phone);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
+    // 회원가입 시 이용
     private boolean isExistEmail(String email) throws BaseException{
         try{
-            if(userDao.isExistEmail(email) == 1) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return userDao.isExistEmail(email);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -72,15 +64,33 @@ public class UserService {
 
     public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq patchUserInfoReq) throws BaseException {
         //중복 여부 검사
-        if (isExistEmail(patchUserInfoReq.getEmail())) {
+        if (isExistEmail(userIdx, patchUserInfoReq.getEmail())) {
             throw new BaseException(USERS_EXISTS_EMAIL);
         }
-        if (isExistPhone(patchUserInfoReq.getPhone())) {
+        if (isExistPhone(userIdx, patchUserInfoReq.getPhone())) {
             throw new BaseException(USERS_EXISTS_PHONE_NUMBER);
         }
 
         try{
             return userDao.modifyUserInfo(userIdx, patchUserInfoReq);
+        }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 회원정보 수정 시 이용
+    private boolean isExistPhone(int userIdx, String phone) throws BaseException{
+        try{
+            return userDao.isExistPhone(userIdx, phone);
+        }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    // 회원정보 수정 시 이용
+    private boolean isExistEmail(int userIdx, String email) throws BaseException{
+        try{
+            return userDao.isExistEmail(userIdx, email);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }

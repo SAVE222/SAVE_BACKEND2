@@ -36,12 +36,7 @@ public class UserProvider {
 
     private boolean isValidUser(int userIdx) throws BaseException {
         try{
-            if(userDao.isActiveUser(userIdx) == 1) {
-                return true;
-            }
-            else{
-                return false;
-            }
+            return userDao.isActiveUser(userIdx);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }

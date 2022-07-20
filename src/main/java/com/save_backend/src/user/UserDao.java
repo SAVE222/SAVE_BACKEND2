@@ -25,21 +25,23 @@ public class UserDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
-    public int isExistPhone(String phone) {
+    //회원가입 시 이용
+    public boolean isExistPhone(String phone) {
         String checkPhoneQuery = "select exists (select user_phone_number from user where user_phone_number = ? and status = 'ACTIVE')";
-        String checkEmailParam = phone;
+        String checkPhoneParam = phone;
 
         return this.jdbcTemplate.queryForObject(checkPhoneQuery,
-                int.class,
-                checkEmailParam);
+                boolean.class,
+                checkPhoneParam);
     }
 
-    public int isExistEmail(String email) {
+    //회원가입 시 이용
+    public boolean isExistEmail(String email) {
         String checkEmailQuery = "select exists (select email from user where email = ? and status = 'ACTIVE')";
         String checkEmailParam = email;
 
         return this.jdbcTemplate.queryForObject(checkEmailQuery,
-                int.class,
+                boolean.class,
                 checkEmailParam);
     }
 
@@ -55,12 +57,12 @@ public class UserDao {
                 ), getUserInfoParam);
     }
 
-    public int isActiveUser(int userIdx) {
+    public boolean isActiveUser(int userIdx) {
         String checkUserQuery = "select exists (select status from user where user_idx = ? and status = 'ACTIVE')";
         int checkUserParam = userIdx;
 
         return this.jdbcTemplate.queryForObject(checkUserQuery,
-                int.class,
+                boolean.class,
                 checkUserParam);
     }
 
@@ -71,6 +73,26 @@ public class UserDao {
         this.jdbcTemplate.update(modifyUserInfoQuery, modifyUserInfoParams);
 
         return new PutUserInfoRes("수정이 완료되었습니다.");
+    }
+
+    //회원정보 수정 시 이용
+    public boolean isExistPhone(int userIdx, String phone) {
+        String checkPhoneQuery = "select exists (select user_phone_number from user where user_phone_number = ? and status = 'ACTIVE' and not user_idx = ?)";
+        Object[] checkPhoneParams = new Object[]{phone, userIdx};
+
+        return this.jdbcTemplate.queryForObject(checkPhoneQuery,
+                boolean.class,
+                checkPhoneParams);
+    }
+
+    //회원정보 수정 시 이용
+    public boolean isExistEmail(int userIdx, String email) {
+        String checkEmailQuery = "select exists (select email from user where email = ? and status = 'ACTIVE' and not user_idx = ?)";
+        Object[] checkEmailParams = new Object[]{email, userIdx};
+
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,
+                boolean.class,
+                checkEmailParams);
     }
 
     public PatchUserRes deleteUser(int userIdx) {
