@@ -69,14 +69,13 @@ public enum BaseResponseStatus {
     /**
      * 6000 : child 관련 오류
      */
-    POST_CHILD_EMPTY_USERIDX(false, 6000, "아동 이름을 입력해주세요."),
+    POST_CHILD_EMPTY_USERIDX(false, 6000, "유저 정보를 확인해주세요."),
     POST_CHILD_EMPTY_NAME(false, 6001, "아동 이름을 입력해주세요."),
-    POST_CHILD_EMPTY_IsCertain(false, 6002, "아동 이름 정확 여부를 체크해주세요."),
-    POST_CHILD_EMPTY_GENDER(false, 6003, "아동 성별을 입력해주세요."),
-    POST_CHILD_EMPTY_AGE(false, 6004, "아동 나이를 입력해주세요."),
-    POST_CHILD_EMPTY_ADDRESS(false, 6005, "아동 주소를 입력해주세요."),
-    POST_CHILD_EMPTY_DETAIL_ADDRESS(false, 6006, "아동 상세주소를 입력해주세요."),
-    NOT_EXIST_USER(false, 6007, "유저가 존재하지 않습니다.");
+    POST_CHILD_EMPTY_GENDER(false, 6002, "아동 성별을 입력해주세요."),
+    POST_CHILD_EMPTY_AGE(false, 6003, "아동 나이를 입력해주세요."),
+    POST_CHILD_EMPTY_ADDRESS(false, 6004, "아동 주소를 입력해주세요."),
+    POST_CHILD_EMPTY_DETAIL_ADDRESS(false, 6005, "아동 상세주소를 입력해주세요."),
+    NOT_EXIST_USER(false, 6006, "유저가 존재하지 않습니다.");
 
     private final boolean isSuccess;
     private final int code;
