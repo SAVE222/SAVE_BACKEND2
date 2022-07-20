@@ -31,7 +31,6 @@ public class UserService {
 
         try{
             String pwd = passwordEncoder.encode(postUserReq.getPassword()); //비밀번호 암호화
-            System.out.println(pwd);
             postUserReq.setPassword(pwd);
         }catch(Exception e){
             throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
