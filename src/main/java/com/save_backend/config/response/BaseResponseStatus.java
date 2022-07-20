@@ -39,8 +39,8 @@ public enum BaseResponseStatus {
     MISSING_ESSENTIAL_RELATION_WITH_CHILD(false,2053,"누락된 아동과의 관계 정보는 필수값입니다."),
 
     // 존재하지 않는 정보
-    NOT_EXIST_CHILD(false,2060,"존재하지 않는 아동에 대한 접근입니다."),
-
+    NOT_EXIST_CHILD(false,2060,"존재하지 않거나 삭제된 아동에 대한 접근입니다."),
+    NOT_EXIST_SUSPECT(false,2061,"존재하지 않거나 삭제된 학대행위자에 대한 접근입니다."),
 
     /**
      * 3000 : Response오류
@@ -51,6 +51,8 @@ public enum BaseResponseStatus {
 
     MODIFY_FAIL_POST(false, 3020, "게시물 수정에 실패하였습니다."),
     DELETE_FAIL_POST(false, 3021, "게시물 삭제에 실패하였습니다."),
+
+    MODIFY_FAIL_SUSPECT(false,3030,"학대행위자 정보 삭제에 실패하였습니다."),
 
 
 
