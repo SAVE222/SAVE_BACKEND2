@@ -24,6 +24,7 @@ public enum BaseResponseStatus {
     USERS_INVALID_PHONE_NUMBER(false, 2010, "전화번호 형식을 확인해주세요."),
     USERS_INVALID_PASSWORD(false, 2011, "비밀번호 형식을 확인해주세요."),
     USERS_INVALID_EMAIL(false, 2012, "이메일 형식을 확인해주세요."),
+    INVALID_GENDER(false,2013,"유효하지 않은 성별값입니다."),
 
     USERS_EXISTS_EMAIL(false, 2030,"중복된 이메일입니다."),
     USERS_EXISTS_PHONE_NUMBER(false, 2031,"중복된 전화번호입니다."),
@@ -31,11 +32,13 @@ public enum BaseResponseStatus {
     POSTS_INVALID_CONTENTS(false, 2040, "내용의 글자수를 확인해주세요."),
     EMPTY_POST_ID(false, 2041, "게시물 아이디 값을 확인해주세요."),
 
+
     // 필수 정보 누락
     MISSING_ESSENTIAL_CHILD_INDEX(false,2050,"누락된 해당 아동의 번호는 필수값입니다."),
     MISSING_ESSENTIAL_GENDER(false,2051,"누락된 성별에 대한 정보는 필수값입니다."),
     MISSING_ESSENTIAL_AGE(false,2052,"누락된 나이 정보가 필수값입니다."),
     MISSING_ESSENTIAL_RELATION_WITH_CHILD(false,2053,"누락된 아동과의 관계 정보는 필수값입니다."),
+
 
     // 존재하지 않는 정보
     NOT_EXIST_CHILD(false,2060,"존재하지 않거나 삭제된 아동에 대한 접근입니다."),

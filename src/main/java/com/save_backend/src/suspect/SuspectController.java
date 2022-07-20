@@ -39,8 +39,14 @@ public class SuspectController {
                 return new BaseResponse<>(MISSING_ESSENTIAL_CHILD_INDEX);
             }
             // 성별 필수
-            if(postSuspectReq.getSuspectGender() == null) {
+            String gender = postSuspectReq.getSuspectGender();
+            if(gender == null) {
                 return new BaseResponse<>(MISSING_ESSENTIAL_GENDER);
+            }
+            // 성별은 female,male, unknown
+            if(gender != "female" || gender != "male" || gender != "unknown")
+            {
+                return new BaseResponse<>(INVALID_GENDER);
             }
             // 나이 필수
             if(postSuspectReq.getSuspectAge() == null) {
@@ -79,6 +85,25 @@ public class SuspectController {
     @ResponseBody
     @PatchMapping("/{suspectIdx}")
     public BaseResponse<PatchSuspectRes> modifyCertainSuspect(@PathVariable("suspectIdx")int suspectIdx, @RequestBody PatchSuspectReq patchSuspectReq){
+        // 성별 필수
+        String gender = patchSuspectReq.getSuspectGender();
+        if(gender == null) {
+            return new BaseResponse<>(MISSING_ESSENTIAL_GENDER);
+        }
+        // 성별은 female,male, unknown
+        if(gender != "female" || gender != "male" || gender != "unknown")
+        {
+            return new BaseResponse<>(INVALID_GENDER);
+        }
+        // 나이 필수
+        if(patchSuspectReq.getSuspectAge() == null) {
+            return new BaseResponse<>(MISSING_ESSENTIAL_AGE);
+        }
+        // 아동과의 관계 필수
+        if(patchSuspectReq.getRelationWithChild() == null) {
+            return new BaseResponse<>(MISSING_ESSENTIAL_RELATION_WITH_CHILD);
+        }
+
         try {
             PatchSuspectRes patchSuspectRes = suspectService.modifyCertainSuspect(suspectIdx, patchSuspectReq);
             return new BaseResponse<>(patchSuspectRes);
