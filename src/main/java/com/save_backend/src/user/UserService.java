@@ -71,7 +71,7 @@ public class UserService {
         }
     }
 
-    public PutUserInfoRes modifyUserInfo(PutUserInfoReq patchUserInfoReq) throws BaseException {
+    public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq patchUserInfoReq) throws BaseException {
         //중복 여부 검사
         if (isExistEmail(patchUserInfoReq.getEmail())) {
             throw new BaseException(USERS_EXISTS_EMAIL);
@@ -81,7 +81,7 @@ public class UserService {
         }
 
         try{
-            return userDao.modifyUserInfo(patchUserInfoReq);
+            return userDao.modifyUserInfo(userIdx, patchUserInfoReq);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
