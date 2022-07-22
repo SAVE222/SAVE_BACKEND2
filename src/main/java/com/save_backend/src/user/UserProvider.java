@@ -6,8 +6,7 @@ import com.save_backend.src.user.model.GetUserInfoRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.save_backend.config.response.BaseResponseStatus.DATABASE_ERROR;
-import static com.save_backend.config.response.BaseResponseStatus.NOT_EXIST_USER;
+import static com.save_backend.config.response.BaseResponseStatus.*;
 
 
 @Service
