@@ -30,16 +30,16 @@ public class ChildController {
         try {
             // 유저인덱스 필수
             if (postChildReq.getUserIdx() == 0) {
-                return new BaseResponse<>(POST_CHILD_EMPTY_USERIDX);
+                return new BaseResponse<>(EMPTY_USER_INDEX);
             }
             // 아동 이름 필수
             if (postChildReq.getName() == null) {
-                return new BaseResponse<>(POST_CHILD_EMPTY_NAME);
+                return new BaseResponse<>(EMPTY_CHILD_NAME);
             }
             // 아동 성별 필수
             String gender = postChildReq.getGender();
             if (gender == null) {
-                return new BaseResponse<>(POST_CHILD_EMPTY_GENDER);
+                return new BaseResponse<>(EMPTY_CHILD_GENDER);
             }
             // 성별은 female, male, unknown 중 하나
             if(!gender.equals("female") && !gender.equals("male") && !gender.equals("unknown")){
@@ -47,11 +47,11 @@ public class ChildController {
             }
             // 아동 나이 필수
             if (postChildReq.getAge() == null) {
-                return new BaseResponse<>(POST_CHILD_EMPTY_AGE);
+                return new BaseResponse<>(EMPTY_CHILD_AGE);
             }
             // 아동 주소 필수
             if (postChildReq.getAddress() == null) {
-                return new BaseResponse<>(POST_CHILD_EMPTY_ADDRESS);
+                return new BaseResponse<>(EMPTY_CHILD_ADDRESS);
             }
 
             PostChildRes postChildRes = childService.createChild(postChildReq);
@@ -86,12 +86,12 @@ public class ChildController {
     public BaseResponse<PatchChildEditRes> modifyChild(@PathVariable("childIdx") int childIdx, @RequestBody PatchChildEditReq patchChildEditReq){
         // 이름 필수
         if (patchChildEditReq.getName() == null) {
-            return new BaseResponse<>(POST_CHILD_EMPTY_NAME);
+            return new BaseResponse<>(EMPTY_CHILD_NAME);
         }
         // 성별 필수
         String gender = patchChildEditReq.getGender();
         if (gender == null) {
-            return new BaseResponse<>(POST_CHILD_EMPTY_GENDER);
+            return new BaseResponse<>(EMPTY_CHILD_GENDER);
         }
         // 성별은 female, male, unknown 중 하나
         if(!gender.equals("female") && !gender.equals("male") && !gender.equals("unknown")){
@@ -99,11 +99,11 @@ public class ChildController {
         }
         //나이 필수
         if (patchChildEditReq.getAge() == null) {
-            return new BaseResponse<>(POST_CHILD_EMPTY_AGE);
+            return new BaseResponse<>(EMPTY_CHILD_AGE);
         }
         // 주소 필수
         if (patchChildEditReq.getAddress() == null) {
-            return new BaseResponse<>(POST_CHILD_EMPTY_ADDRESS);
+            return new BaseResponse<>(EMPTY_CHILD_ADDRESS);
         }
         try {
             PatchChildEditRes patchChildEditRes = childService.modifyChild(childIdx, patchChildEditReq);

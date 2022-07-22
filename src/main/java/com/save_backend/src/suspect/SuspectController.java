@@ -36,12 +36,12 @@ public class SuspectController {
         try {
             // 아동인덱스 필수
             if(postSuspectReq.getChildIdx() == 0) {
-                return new BaseResponse<>(MISSING_ESSENTIAL_CHILD_INDEX);
+                return new BaseResponse<>(EMPTY_CHILD_INDEX);
             }
             // 성별 필수
             String gender = postSuspectReq.getSuspectGender();
             if(gender == null) {
-                return new BaseResponse<>(MISSING_ESSENTIAL_GENDER);
+                return new BaseResponse<>(EMPTY_SUSPECT_GENDER);
             }
             // 성별은 female, male, unknown 중 하나
             if(!gender.equals("female") && !gender.equals("male") && !gender.equals("unknown")){
@@ -49,11 +49,11 @@ public class SuspectController {
             }
             // 나이 필수
             if(postSuspectReq.getSuspectAge() == null) {
-                return new BaseResponse<>(MISSING_ESSENTIAL_AGE);
+                return new BaseResponse<>(EMPTY_SUSPECT_AGE);
             }
             // 아동과의 관계 필수
             if(postSuspectReq.getRelationWithChild() == null) {
-                return new BaseResponse<>(MISSING_ESSENTIAL_RELATION_WITH_CHILD);
+                return new BaseResponse<>(EMPTY_SUSPECT_RELATION_WITH_CHILD);
             }
             PostSuspectRes postSuspectRes = suspectService.createSuspect(postSuspectReq);
             return new BaseResponse<>(postSuspectRes);
@@ -87,7 +87,7 @@ public class SuspectController {
         // 성별 필수
         String gender = patchSuspectReq.getSuspectGender();
         if(gender == null) {
-            return new BaseResponse<>(MISSING_ESSENTIAL_GENDER);
+            return new BaseResponse<>(EMPTY_SUSPECT_GENDER);
         }
         // 성별은 female, male, unknown 중 하나
         if(!gender.equals("female") && !gender.equals("male") && !gender.equals("unknown")){
@@ -95,11 +95,11 @@ public class SuspectController {
         }
         // 나이 필수
         if(patchSuspectReq.getSuspectAge() == null) {
-            return new BaseResponse<>(MISSING_ESSENTIAL_AGE);
+            return new BaseResponse<>(EMPTY_SUSPECT_AGE);
         }
         // 아동과의 관계 필수
         if(patchSuspectReq.getRelationWithChild() == null) {
-            return new BaseResponse<>(MISSING_ESSENTIAL_RELATION_WITH_CHILD);
+            return new BaseResponse<>(EMPTY_SUSPECT_RELATION_WITH_CHILD);
         }
 
         try {
