@@ -38,14 +38,14 @@ public class UserController {
         //유효하지 않은 형식인 경우 처리
         if(postUserReq.getEmail() != null){
             if(!isValidEmail(postUserReq.getEmail())){
-                return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_EMAIL);
+                return new BaseResponse<>(BaseResponseStatus.INVALID_EMAIL);
             }
         }
         if(!isValidPhone(postUserReq.getPhone())){
-            return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_PHONE_NUMBER);
+            return new BaseResponse<>(BaseResponseStatus.INVALID_PHONE_NUMBER);
         }
         if(!isValidPassword(postUserReq.getPassword())){
-            return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_PASSWORD);
+            return new BaseResponse<>(BaseResponseStatus.INVALID_PASSWORD);
         }
 
         try{
@@ -85,11 +85,14 @@ public class UserController {
         //유효하지 않은 형식인 경우 처리
         if(putUserInfoReq.getEmail() != null){
             if(!isValidEmail(putUserInfoReq.getEmail())){
-                return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_EMAIL);
+                return new BaseResponse<>(BaseResponseStatus.INVALID_EMAIL);
             }
         }
         if(!isValidPhone(putUserInfoReq.getPhone())){
-            return new BaseResponse<>(BaseResponseStatus.USERS_INVALID_PHONE_NUMBER);
+            return new BaseResponse<>(BaseResponseStatus.INVALID_PHONE_NUMBER);
+        }
+        if(!isValidEmail(putUserInfoReq.getEmail())){
+            return new BaseResponse<>(BaseResponseStatus.INVALID_EMAIL);
         }
 
         try{
