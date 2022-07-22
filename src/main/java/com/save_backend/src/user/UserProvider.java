@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.save_backend.config.response.BaseResponseStatus.DATABASE_ERROR;
-import static com.save_backend.config.response.BaseResponseStatus.USERS_INACTIVE_USER_ID;
+import static com.save_backend.config.response.BaseResponseStatus.NOT_EXIST_USER;
+
 
 @Service
 public class UserProvider {
@@ -23,7 +24,7 @@ public class UserProvider {
     public BaseResponse<GetUserInfoRes> getUserInfo(int userIdx) throws BaseException {
         //탈퇴 처리 된 회원의 정보를 조회할 경우
         if(!isValidUser(userIdx)){
-            throw new BaseException(USERS_INACTIVE_USER_ID);
+            throw new BaseException(NOT_EXIST_USER);
         }
 
         try{
