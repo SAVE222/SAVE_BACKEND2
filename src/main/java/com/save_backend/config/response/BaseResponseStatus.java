@@ -31,7 +31,7 @@ public enum BaseResponseStatus {
     EMPTY_USER_PHONE_NUMBER(false, 2012, "유저 이름을 입력해주세요."),
 
     // Child (2020~)
-    EMPTY_CHILD_INDEX(false, 2020, "유저 인덱스 값을 입력해주세요."),
+    EMPTY_CHILD_INDEX(false, 2020, "아동 인덱스 값을 입력해주세요."),
     EMPTY_CHILD_NAME(false, 2021, "아동 이름을 입력해주세요."),
     EMPTY_CHILD_GENDER(false, 2022, "아동 성별을 입력해주세요."),
     EMPTY_CHILD_AGE(false, 2023, "아동 나이를 입력해주세요."),
@@ -47,8 +47,8 @@ public enum BaseResponseStatus {
     EMPTY_ABUSE_INDEX(false,2040,"학대정황기록의 인덱스 값을 입력해주세요."),
     EMPTY_ABUSE_DATE(false,2041,"목격 날짜를 입력해주세요."),
     EMPTY_ABUSE_TIME(false,2042,"목격 시간을 입력해주세요."),
-    EMPTY_ABUSE_PLACE(false,2043,"목격 시간을 입력해주세요."),
-    EMPTY_ABUSE_TYPE(false,2044,"목격 시간을 입력해주세요."),
+    EMPTY_ABUSE_PLACE(false,2043,"목격 장소를 입력해주세요."),
+    EMPTY_ABUSE_TYPE(false,2044,"학대 유형을 입력해주세요."),
     EMPTY_ABUSE_DESCRIPTION(false,2045,"구체적인 의심정황을 입력해주세요."),
 
     // file (2050~)
