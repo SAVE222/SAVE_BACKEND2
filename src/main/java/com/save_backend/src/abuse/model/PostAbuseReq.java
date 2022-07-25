@@ -17,7 +17,7 @@ public class PostAbuseReq {
     private String time;
     private String place;
     private String detail;
-    private String etc;
+    private String etc;  //선택
     private List<String> type;
     private List<PostAbuseSuspectReq> suspect;
 }

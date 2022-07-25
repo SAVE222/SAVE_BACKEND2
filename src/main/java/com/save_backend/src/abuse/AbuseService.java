@@ -20,7 +20,7 @@ public class AbuseService {
     }
 
     /**
-     * 1. 아동 정보 생성
+     * 1. 학대 정황 생성
      */
     public PostAbuseRes createAbuse(PostAbuseReq postAbuseReq) throws BaseException {
         //존재하는 아동에 대한 정황 생성인지 확인
@@ -42,6 +42,8 @@ public class AbuseService {
             String typeStr = sb.toString();
 
             int abuseIdx = abuseDao.insertAbuse(typeStr, postAbuseReq);
+
+            //학대정황-의심자 테이블에 추가
             for(int i = 0; i < postAbuseReq.getSuspect().size(); i++) {
                 abuseDao.insertAbuseSuspect(abuseIdx, postAbuseReq.getSuspect().get(i));
             }
@@ -50,4 +52,6 @@ public class AbuseService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+
 }
