@@ -1,6 +1,7 @@
 package com.save_backend.src.user;
 
 import com.save_backend.config.exception.BaseException;
+import com.save_backend.src.user.model.PatchAlarmRes;
 import com.save_backend.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,11 +12,13 @@ import static com.save_backend.config.response.BaseResponseStatus.*;
 @Service
 public class UserService {
 
+    private final UserProvider userProvider;
     private final UserDao userDao;
     PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserDao userDao, PasswordEncoder passwordEncoder) {
+    public UserService(UserProvider userProvider, UserDao userDao, PasswordEncoder passwordEncoder) {
+        this.userProvider = userProvider;
         this.userDao = userDao;
         this.passwordEncoder = passwordEncoder;
     }
@@ -113,6 +116,18 @@ public class UserService {
         try{
             return userDao.deleteUser(user_idx);
         }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public PatchAlarmRes changeAlarm(int userIdx) throws BaseException {
+        //존재하는 유저(active)인지
+        if(!isValidUser(userIdx)){
+            throw new BaseException(NOT_EXIST_USER);
+        }
+        try{
+            return userDao.changeAlarm(userIdx);
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }

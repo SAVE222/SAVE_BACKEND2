@@ -2,6 +2,7 @@ package com.save_backend.src.user;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
+import com.save_backend.src.user.model.GetAlarmRes;
 import com.save_backend.src.user.model.GetUserInfoRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,17 @@ public class UserProvider {
             GetUserInfoRes result = userDao.getUserInfo(userIdx);
             return new BaseResponse<>(result);
         }catch(Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public GetAlarmRes getAlarm(int userIdx) throws BaseException {
+        if(!this.isValidUser(userIdx)){
+            throw new BaseException(NOT_EXIST_USER);
+        }
+        try{
+            return userDao.getAlarm(userIdx);
+        } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
