@@ -52,9 +52,8 @@ public enum BaseResponseStatus {
     EMPTY_ABUSE_DESCRIPTION(false,2045,"구체적인 의심정황을 입력해주세요."),
 
     // file (2050~)
-    EMPTY_FILE_INDEX(false,2050,"파일 인덱스 값을 입력해주세요."),
-    EMPTY_FILE_PATH(false,2051,"파일 경로를 입력해주세요."),
-    EMPTY_FILE_NAME(false,2052,"파일 이름을 입력해주세요."),
+    EMPTY_FILE(false,2050,"파일을 첨부해주세요."),
+    EMPTY_FILE_INDEX(false,2051,"파일 인덱스 값을 입력해주세요."),
 
     /**
      * 2. 유효한 형식이 아닐 때 (2100~)
@@ -100,6 +99,16 @@ public enum BaseResponseStatus {
     DELETE_FAIL_POST(false, 3021, "게시물 삭제에 실패하였습니다."),
 
     MODIFY_FAIL_SUSPECT(false,3030,"학대행위자 정보 삭제에 실패하였습니다."),
+
+    UPLOAD_FAIL_IMAGE(false, 3040, "이미지 업로드에 실패하였습니다."),
+    UPLOAD_FAIL_VIDEO(false, 3041, "동영상 업로드에 실패하였습니다."),
+    UPLOAD_FAIL_RECORDING(false, 3042, "녹음파일 업로드에 실패하였습니다."),
+    DELETE_FAIL_IMAGE(false, 3043, "이미지 삭제에 실패하였습니다."),
+    DELETE_FAIL_VIDEO(false, 3044, "동영상 삭제에 실패하였습니다."),
+    DELETE_FAIL_RECORDING(false, 3045, "녹음파일 삭제에 실패하였습니다."),
+    DOWNLOAD_FAIL_IMAGE(false, 3046, "이미지 다운로드에 실패하였습니다."),
+    DOWNLOAD_FAIL_VIDEO(false, 3047, "동영상 다운로드에 실패하였습니다."),
+    DOWNLOAD_FAIL_RECORDING(false, 3048, "녹음파일 다운로드에 실패하였습니다."),
 
 
 
