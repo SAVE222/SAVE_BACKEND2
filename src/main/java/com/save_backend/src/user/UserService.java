@@ -25,10 +25,10 @@ public class UserService {
 
     public PostUserRes generalSignUp(PostUserReq postUserReq) throws BaseException{
         //중복 여부 검사
-        if (isExistEmail(postUserReq.getEmail())) {
+        if (userProvider.isExistEmail(postUserReq.getEmail())) {
             throw new BaseException(EXISTS_EMAIL);
         }
-        if (isExistPhone(postUserReq.getPhone())) {
+        if (userProvider.isExistPhone(postUserReq.getPhone())) {
             throw new BaseException(EXISTS_PHONE_NUMBER);
         }
 
@@ -47,66 +47,23 @@ public class UserService {
         }
     }
 
-    // 회원가입 시 이용
-    private boolean isExistPhone(String phone) throws BaseException{
-        try{
-            return userDao.isExistPhone(phone);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    // 회원가입 시 이용
-    private boolean isExistEmail(String email) throws BaseException{
-        try{
-            return userDao.isExistEmail(email);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
 
     public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq patchUserInfoReq) throws BaseException {
         //회원 탈퇴 여부 검사
-        if (!isValidUser(userIdx)){
+        if (!userProvider.isValidUser(userIdx)){
             throw new BaseException(NOT_EXIST_USER);
         }
 
         //중복 여부 검사
-        if (isExistEmail(userIdx, patchUserInfoReq.getEmail())) {
+        if (userProvider.isExistEmail(userIdx, patchUserInfoReq.getEmail())) {
             throw new BaseException(EXISTS_EMAIL);
         }
-        if (isExistPhone(userIdx, patchUserInfoReq.getPhone())) {
+        if (userProvider.isExistPhone(userIdx, patchUserInfoReq.getPhone())) {
             throw new BaseException(EXISTS_PHONE_NUMBER);
         }
 
         try{
             return userDao.modifyUserInfo(userIdx, patchUserInfoReq);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    private boolean isValidUser(int userIdx) throws BaseException {
-        try{
-            return userDao.isActiveUser(userIdx);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    // 회원정보 수정 시 이용
-    private boolean isExistPhone(int userIdx, String phone) throws BaseException{
-        try{
-            return userDao.isExistPhone(userIdx, phone);
-        }catch(Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    // 회원정보 수정 시 이용
-    private boolean isExistEmail(int userIdx, String email) throws BaseException{
-        try{
-            return userDao.isExistEmail(userIdx, email);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
@@ -122,7 +79,7 @@ public class UserService {
 
     public PatchAlarmRes changeAlarm(int userIdx) throws BaseException {
         //존재하는 유저(active)인지
-        if(!isValidUser(userIdx)){
+        if(!userProvider.isValidUser(userIdx)){
             throw new BaseException(NOT_EXIST_USER);
         }
         try{
