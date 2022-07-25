@@ -48,22 +48,22 @@ public class UserService {
     }
 
 
-    public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq patchUserInfoReq) throws BaseException {
+    public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq putUserInfoReq) throws BaseException {
         //회원 탈퇴 여부 검사
         if (!userProvider.isValidUser(userIdx)){
             throw new BaseException(NOT_EXIST_USER);
         }
 
         //중복 여부 검사
-        if (userProvider.isExistEmail(userIdx, patchUserInfoReq.getEmail())) {
+        if (userProvider.isExistEmail(userIdx, putUserInfoReq.getEmail())) {
             throw new BaseException(EXISTS_EMAIL);
         }
-        if (userProvider.isExistPhone(userIdx, patchUserInfoReq.getPhone())) {
+        if (userProvider.isExistPhone(userIdx, putUserInfoReq.getPhone())) {
             throw new BaseException(EXISTS_PHONE_NUMBER);
         }
 
         try{
-            return userDao.modifyUserInfo(userIdx, patchUserInfoReq);
+            return userDao.modifyUserInfo(userIdx, putUserInfoReq);
         }catch(Exception e){
             throw new BaseException(DATABASE_ERROR);
         }
