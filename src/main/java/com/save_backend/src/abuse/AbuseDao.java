@@ -1,6 +1,7 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.src.abuse.model.*;
+import com.save_backend.src.child.model.PatchChildDelRes;
 import com.save_backend.src.child.model.PatchChildEditReq;
 import com.save_backend.src.child.model.PatchChildEditRes;
 import com.save_backend.src.suspect.model.GetSuspectRes;
@@ -107,6 +108,30 @@ public class AbuseDao {
         };
 
         return this.jdbcTemplate.update(modifyAbuseQuery, modifyAbuseParams);
+    }
+
+
+    public PatchAbuseDelRes deleteAbuse(int abuseIdx) {
+
+        String getAbuseByIdxQuery =
+                "SELECT abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc\n" +
+                        "FROM abuse_situation WHERE abuse_idx = ?;";
+
+        String deleteAbuseQuery = "update abuse_situation set status = 'INACTIVE' where abuse_idx = ?";
+        int deleteAbuseParam = abuseIdx;
+
+        this.jdbcTemplate.update(deleteAbuseQuery, deleteAbuseParam);
+
+        return this.jdbcTemplate.queryForObject(getAbuseByIdxQuery,
+                (rs, rowNum) -> new PatchAbuseDelRes(
+                        rs.getString("abuse_date"),
+                        rs.getString("abuse_time"),
+                        rs.getString("abuse_place"),
+                        rs.getString("abuse_type"),
+                        rs.getString("detail_description"),
+                        rs.getString("etc"),
+                        "학대 정황 삭제가 완료되었습니다."
+                ), deleteAbuseParam);
     }
 
 

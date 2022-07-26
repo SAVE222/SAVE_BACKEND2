@@ -1,9 +1,11 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.config.exception.BaseException;
+import com.save_backend.src.abuse.model.PatchAbuseDelRes;
 import com.save_backend.src.abuse.model.PatchAbuseReq;
 import com.save_backend.src.abuse.model.PostAbuseReq;
 import com.save_backend.src.abuse.model.PostAbuseRes;
+import com.save_backend.src.child.model.PatchChildDelRes;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -70,6 +72,22 @@ public class AbuseService {
             }
         } catch (Exception exception) {
             System.out.println("exception = " + exception);
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+
+    /**
+     * 4. 학대 정황 삭제 (active -> inactive)
+     */
+    public PatchAbuseDelRes deleteAbuse(int abuseIdx) throws BaseException {
+        //존재하는 정황(active)에 대한 delete인지 확인
+        if(abuseProvider.checkAbuse(abuseIdx)==0){
+            throw new BaseException(NOT_EXIST_ABUSE_SITUATION);
+        }
+        try{
+            return abuseDao.deleteAbuse(abuseIdx);
+        }catch(Exception exception){
             throw new BaseException(DATABASE_ERROR);
         }
     }

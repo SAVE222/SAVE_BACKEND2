@@ -5,10 +5,7 @@ import com.save_backend.config.response.BaseResponse;
 import com.save_backend.src.abuse.model.*;
 import com.save_backend.src.child.ChildProvider;
 import com.save_backend.src.child.ChildService;
-import com.save_backend.src.child.model.PatchChildEditReq;
-import com.save_backend.src.child.model.PatchChildEditRes;
-import com.save_backend.src.child.model.PostChildReq;
-import com.save_backend.src.child.model.PostChildRes;
+import com.save_backend.src.child.model.*;
 import com.save_backend.src.suspect.model.GetSuspectRes;
 import org.springframework.web.bind.annotation.*;
 
@@ -119,6 +116,20 @@ public class AbuseController {
             return new BaseResponse<>(editResult);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * 4. 학대 정황 삭제 api
+     */
+    @ResponseBody
+    @PatchMapping("/status/{abuseIdx}")
+    public BaseResponse<PatchAbuseDelRes> deleteCAbuse(@PathVariable("abuseIdx") int abuseIdx) {
+        try {
+            PatchAbuseDelRes patchAbuseDelRes = abuseService.deleteAbuse(abuseIdx);
+            return new BaseResponse<>(patchAbuseDelRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
         }
     }
 }
