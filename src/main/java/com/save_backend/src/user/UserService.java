@@ -47,7 +47,6 @@ public class UserService {
         }
     }
 
-
     public PutUserInfoRes modifyUserInfo(int userIdx, PutUserInfoReq putUserInfoReq) throws BaseException {
         //회원 탈퇴 여부 검사
         if (!userProvider.isValidUser(userIdx)){

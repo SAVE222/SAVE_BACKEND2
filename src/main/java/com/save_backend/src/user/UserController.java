@@ -37,7 +37,6 @@ public class UserController {
             return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
         }
 
-        //유효하지 않은 형식인 경우 처리
         if(!isValidPhone(postUserReq.getPhone())){
             return new BaseResponse<>(BaseResponseStatus.INVALID_PHONE_NUMBER);
         }
@@ -82,7 +81,6 @@ public class UserController {
             return new BaseResponse<>(BaseResponseStatus.REQUEST_ERROR);
         }
 
-        //유효하지 않은 형식인 경우 처리
         if(!isValidPhone(putUserInfoReq.getPhone())){
             return new BaseResponse<>(BaseResponseStatus.INVALID_PHONE_NUMBER);
         }
