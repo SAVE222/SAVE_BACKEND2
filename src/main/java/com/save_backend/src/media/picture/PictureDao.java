@@ -32,7 +32,6 @@ public class PictureDao {
     public String getPictureKey(Long pictureIdx){
         String getPictureKeyQuery = "select pic_path from picture where picture_idx = ?";
 
-        String result = this.jdbcTemplate.queryForObject(getPictureKeyQuery, String.class, pictureIdx);
-        return result.split("/")[4];
+        return this.jdbcTemplate.queryForObject(getPictureKeyQuery, String.class, pictureIdx);
     }
 }

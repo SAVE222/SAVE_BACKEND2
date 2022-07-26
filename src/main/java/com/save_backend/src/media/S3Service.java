@@ -2,9 +2,6 @@ package com.save_backend.src.media;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
-import com.amazonaws.util.IOUtils;
-import com.save_backend.config.exception.BaseException;
-import com.save_backend.config.response.BaseResponseStatus;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,21 +73,5 @@ public class S3Service {
         if(targetFile.delete()){
             return;
         }
-    }
-
-
-    public byte[] download(String folderName, String key){
-        S3Object obj = amazonS3Client.getObject(bucket, folderName+"/"+key);
-        S3ObjectInputStream stream = obj.getObjectContent();
-
-        try{
-            byte[] content = IOUtils.toByteArray(stream);
-            obj.close();
-
-            return content;
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-        return null;
     }
 }
