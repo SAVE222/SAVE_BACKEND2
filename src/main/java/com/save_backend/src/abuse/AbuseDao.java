@@ -1,9 +1,8 @@
 package com.save_backend.src.abuse;
 
-import com.save_backend.src.abuse.model.GetAbuseRes;
-import com.save_backend.src.abuse.model.GetAbuseSuspectRes;
-import com.save_backend.src.abuse.model.PostAbuseReq;
-import com.save_backend.src.abuse.model.PostAbuseSuspectReq;
+import com.save_backend.src.abuse.model.*;
+import com.save_backend.src.child.model.PatchChildEditReq;
+import com.save_backend.src.child.model.PatchChildEditRes;
 import com.save_backend.src.suspect.model.GetSuspectRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
