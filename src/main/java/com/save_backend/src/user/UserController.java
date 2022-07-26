@@ -4,6 +4,8 @@ package com.save_backend.src.user;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
+import com.save_backend.src.user.model.GetAlarmRes;
+import com.save_backend.src.user.model.PatchAlarmRes;
 import com.save_backend.src.user.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -107,4 +109,34 @@ public class UserController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    /**
+     * 알람 여부 조회 API
+     */
+    @ResponseBody
+    @GetMapping("/alarm/{userIdx}")
+    public BaseResponse<GetAlarmRes> getAlarm(@PathVariable("userIdx") int userIdx) {
+        try{
+            GetAlarmRes getAlarmRes = userProvider.getAlarm(userIdx);
+            return new BaseResponse<>(getAlarmRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+
+        }
+    }
+
+    /**
+     * 알람 여부 변경 API
+     */
+    @ResponseBody
+    @PatchMapping("/alarm/{userIdx}")
+    public BaseResponse<PatchAlarmRes> changeAlarm(@PathVariable("userIdx") int userIdx) {
+        try{
+            PatchAlarmRes patchAlarmRes = userService.changeAlarm(userIdx);
+            return new BaseResponse<>(patchAlarmRes);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
 }
