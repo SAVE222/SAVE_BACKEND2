@@ -28,7 +28,6 @@ public class AbuseProvider {
             GetAbuseRes getAbuseRes = abuseDao.getAbuseByIdx(abuseIdx);
             return getAbuseRes;
         } catch (Exception exception) {
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }

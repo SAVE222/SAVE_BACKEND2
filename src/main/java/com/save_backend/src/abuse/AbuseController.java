@@ -65,7 +65,6 @@ public class AbuseController {
             PostAbuseRes postAbuseRes = abuseService.createAbuse(postAbuseReq);
             return new BaseResponse<>(postAbuseRes);
         } catch (BaseException exception) {
-            System.out.println("exception" + exception);
             return new BaseResponse<>(exception.getStatus());
         }
     }
