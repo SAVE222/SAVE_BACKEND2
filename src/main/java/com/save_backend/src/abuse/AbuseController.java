@@ -2,11 +2,11 @@ package com.save_backend.src.abuse;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
-import com.save_backend.src.abuse.model.GetAbuseRes;
-import com.save_backend.src.abuse.model.PostAbuseReq;
-import com.save_backend.src.abuse.model.PostAbuseRes;
+import com.save_backend.src.abuse.model.*;
 import com.save_backend.src.child.ChildProvider;
 import com.save_backend.src.child.ChildService;
+import com.save_backend.src.child.model.PatchChildEditReq;
+import com.save_backend.src.child.model.PatchChildEditRes;
 import com.save_backend.src.child.model.PostChildReq;
 import com.save_backend.src.child.model.PostChildRes;
 import com.save_backend.src.suspect.model.GetSuspectRes;
@@ -78,6 +78,45 @@ public class AbuseController {
         try {
             GetAbuseRes getAbuseRes = abuseProvider.getAbuseByIdx(abuseIdx);
             return new BaseResponse<>(getAbuseRes);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
+
+    /**
+     * 3. 학대 정황 수정 api
+     */
+    @ResponseBody
+    @PatchMapping("/{abuseIdx}")
+    public BaseResponse<String> modifyAbuse(@PathVariable("abuseIdx") int abuseIdx, @RequestBody PatchAbuseReq patchAbuseReq){
+        // 날짜 선택 필수
+        if(patchAbuseReq.getDate() == null){
+            return new BaseResponse<>(EMPTY_ABUSE_DATE);
+        }
+        // 시간 선택 필수
+        if (patchAbuseReq.getTime() == null) {
+            return new BaseResponse<>(EMPTY_ABUSE_TIME);
+        }
+        // 장소 선택 필수
+        if (patchAbuseReq.getPlace() == null) {
+            return new BaseResponse<>(EMPTY_ABUSE_PLACE);
+        }
+        // 구체적 의심정황 입력 필수
+        if (patchAbuseReq.getDetail() == null) {
+            return new BaseResponse<>(EMPTY_ABUSE_DESCRIPTION);
+        }
+        //학대 의심자 선택 필수
+//        if (patchAbuseReq.getSuspect().size() < 1) {
+//            return new BaseResponse<>(EMPTY_SUSPECT_INDEX);
+//        }
+        // 학대유형 선택 필수
+        if (patchAbuseReq.getType().size() < 1) {
+            return new BaseResponse<>(EMPTY_ABUSE_TYPE);
+        }
+        try {
+            abuseService.modifyAbuse(abuseIdx, patchAbuseReq);
+            String editResult = "정황 수정을 완료하였습니다.";
+            return new BaseResponse<>(editResult);
         } catch (BaseException exception){
             return new BaseResponse<>(exception.getStatus());
         }

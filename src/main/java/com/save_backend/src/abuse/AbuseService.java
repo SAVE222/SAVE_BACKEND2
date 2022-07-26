@@ -1,6 +1,7 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.config.exception.BaseException;
+import com.save_backend.src.abuse.model.PatchAbuseReq;
 import com.save_backend.src.abuse.model.PostAbuseReq;
 import com.save_backend.src.abuse.model.PostAbuseRes;
 import org.springframework.stereotype.Service;
@@ -54,4 +55,22 @@ public class AbuseService {
     }
 
 
+    /**
+     * 3. 학대 정황 수정
+     */
+    public void modifyAbuse(int abuseIdx, PatchAbuseReq patchAbuseReq) throws BaseException {
+        //존재하는 정황(active)에 대한 modify인지 확인
+        if(abuseProvider.checkChild(abuseIdx) ==0) {
+            throw new BaseException(NOT_EXIST_ABUSE_SITUATION);
+        }
+        try{
+            int editResult = abuseDao.modifyAbuse(patchAbuseReq, abuseIdx);
+            if(editResult == 0){
+                throw new BaseException(MODIFY_FAIL_POST);
+            }
+        } catch (Exception exception) {
+            System.out.println("exception = " + exception);
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

@@ -82,6 +82,34 @@ public class AbuseDao {
     }
 
 
+    public int modifyAbuse(PatchAbuseReq patchAbuseReq, int abuseIdx){
+        //학대 유형 list -> string 변환
+        List<String> type = patchAbuseReq.getType();
+        StringBuilder sb = new StringBuilder();
+        for (String s : type) {
+            sb.append(s);
+            sb.append(",");
+        }
+        String typeStr = sb.toString();
+
+        String modifyAbuseQuery = "UPDATE abuse_situation " +
+                "SET abuse_date = ?, abuse_time = ?, abuse_place = ?, abuse_type = ?, detail_description = ?, etc = ?, edit_date = current_date\n" +
+                "WHERE abuse_idx = ?;";
+
+        Object[] modifyAbuseParams = new Object[]{
+                patchAbuseReq.getDate(),
+                patchAbuseReq.getTime(),
+                patchAbuseReq.getPlace(),
+                typeStr,
+                patchAbuseReq.getDetail(),
+                patchAbuseReq.getEtc(),
+                abuseIdx
+        };
+
+        return this.jdbcTemplate.update(modifyAbuseQuery, modifyAbuseParams);
+    }
+
+
     /**
      * Validation
      */
