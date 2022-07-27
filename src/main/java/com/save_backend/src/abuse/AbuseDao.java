@@ -1,12 +1,7 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.src.abuse.model.*;
-import com.save_backend.src.child.model.PatchChildDelRes;
-import com.save_backend.src.child.model.PatchChildEditReq;
-import com.save_backend.src.child.model.PatchChildEditRes;
-import com.save_backend.src.suspect.model.GetSuspectRes;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -108,6 +103,26 @@ public class AbuseDao {
         };
 
         return this.jdbcTemplate.update(modifyAbuseQuery, modifyAbuseParams);
+    }
+
+    public void deleteAbuseSuspect(int abuseIdx) {
+        String deleteAbuseSuspectQuery = "delete from situation_suspect_relation where abuse_idx_relation = ?";
+        int deleteAbuseParam = abuseIdx;
+
+        this.jdbcTemplate.update(deleteAbuseSuspectQuery, deleteAbuseParam);
+    }
+
+    public int modifyAbuseSuspect(int abuseIdx, PatchAbuseSuspectReq patchAbuseSuspectReq) {
+        String modifyAbuseSuspectQuery = "insert into situation_suspect_relation(abuse_idx_relation, suspect_idx_relation) " +
+                "VALUES (?, ?)";
+        Object[] modifyAbuseSuspectParams = new Object[]{
+                abuseIdx,
+                patchAbuseSuspectReq.getSuspectIdx()
+        };
+        this.jdbcTemplate.update(modifyAbuseSuspectQuery, modifyAbuseSuspectParams);
+
+        String lastInserIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
     }
 
 

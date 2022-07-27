@@ -16,4 +16,5 @@ public class PatchAbuseReq {
     private String detail;
     private String etc;  //선택
     private List<String> type;
+    private List<PatchAbuseSuspectReq> suspect;
 }

@@ -30,10 +30,6 @@ public class AbuseService {
         if(abuseProvider.checkChild(postAbuseReq.getChildIdx())==0){
             throw new BaseException(NOT_EXIST_CHILD);
         }
-        //학대 의심자 존재하는지 확인
-        if(abuseProvider.checkSuspect(postAbuseReq.getChildIdx())==0){
-            throw new BaseException(NOT_EXIST_SUSPECT);
-        }
         try{
             //학대 유형 list -> string 변환
             List<String> type = postAbuseReq.getType();
@@ -65,11 +61,21 @@ public class AbuseService {
         if(abuseProvider.checkChild(abuseIdx) ==0) {
             throw new BaseException(NOT_EXIST_ABUSE_SITUATION);
         }
+
         try{
             int editResult = abuseDao.modifyAbuse(patchAbuseReq, abuseIdx);
             if(editResult == 0){
                 throw new BaseException(MODIFY_FAIL_POST);
             }
+
+            //학대-의심자 테이블에서 abuseIdx 일치하는 값 삭제 후 수정 진행
+            abuseDao.deleteAbuseSuspect(abuseIdx);
+
+            //학대정황-의심자 테이블 수정(추가)
+            for(int i = 0; i < patchAbuseReq.getSuspect().size(); i++) {
+                abuseDao.modifyAbuseSuspect(abuseIdx, patchAbuseReq.getSuspect().get(i));
+            }
+
         } catch (Exception exception) {
             System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);

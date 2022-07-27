@@ -102,10 +102,6 @@ public class AbuseController {
         if (patchAbuseReq.getDetail() == null) {
             return new BaseResponse<>(EMPTY_ABUSE_DESCRIPTION);
         }
-        //학대 의심자 선택 필수
-//        if (patchAbuseReq.getSuspect().size() < 1) {
-//            return new BaseResponse<>(EMPTY_SUSPECT_INDEX);
-//        }
         // 학대유형 선택 필수
         if (patchAbuseReq.getType().size() < 1) {
             return new BaseResponse<>(EMPTY_ABUSE_TYPE);

@@ -2,8 +2,7 @@ package com.save_backend.src.abuse;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.src.abuse.model.GetAbuseRes;
-import com.save_backend.src.child.ChildDao;
-import com.save_backend.src.suspect.model.GetSuspectRes;
+import com.save_backend.src.abuse.model.PostAbuseSuspectReq;
 import org.springframework.stereotype.Service;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
