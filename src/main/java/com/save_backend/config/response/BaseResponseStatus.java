@@ -71,22 +71,26 @@ public enum BaseResponseStatus {
      * 3. 이미 존재하는 리소스와 중복된 값일 때(2200~)
      * EXIST_목적어
      */
-    EXISTS_EMAIL(false, 2022,"중복된 이메일입니다."),
-    EXISTS_PHONE_NUMBER(false, 2023,"중복된 전화번호입니다."),
+    EXISTS_EMAIL(false, 2200,"중복된 이메일입니다."),
+    EXISTS_PHONE_NUMBER(false, 2201,"중복된 전화번호입니다."),
 
 
     /**
      * 4. 접근이 유효하지 않거나 : INVALID_ACCESS_목적어
      * 존재하지 않는 리소스에 접근시도할 때 : NOT_EXIST_목적어
+     * (2300~)
      */
-    INVALID_ACCESS_USER_JWT(false, 2003,"권한이 없는 유저의 접근입니다."),
-    NOT_EXIST_USER(false, 6006, "유저가 존재하지 않습니다."),
-    NOT_EXIST_CHILD(false,2060,"해당 아동이 존재하지 않습니다."),
-    NOT_EXIST_SUSPECT(false,2061,"해당 학대행위자가 존재하지 않습니다."),
-    NOT_EXIST_ABUSE_SITUATION(false,2061,"해당 기록이 존재하지 않습니다."),
-    NOT_EXIST_PICTURE(false,2061,"해당 사진이 존재하지 않습니다."),
-    NOT_EXIST_VIDEO(false,2061,"해당 영상이 존재하지 않습니다."),
-    NOT_EXIST_RECORDING(false,2061,"해당 녹음파일이 존재하지 않습니다."),
+    INVALID_ACCESS_USER_JWT(false, 2300,"권한이 없는 유저의 접근입니다."),
+    NOT_EXIST_USER(false, 2301, "유저가 존재하지 않습니다."),
+
+    NOT_EXIST_CHILD(false,2310,"해당 아동이 존재하지 않습니다."),
+    NOT_EXIST_SUSPECT(false,2311,"해당 학대행위자가 존재하지 않습니다."),
+
+    NOT_EXIST_ABUSE_SITUATION(false,2320,"해당 기록이 존재하지 않습니다."),
+
+    NOT_EXIST_PICTURE(false,2330,"해당 사진이 존재하지 않습니다."),
+    NOT_EXIST_VIDEO(false,2331,"해당 영상이 존재하지 않습니다."),
+    NOT_EXIST_RECORDING(false,2332,"해당 녹음파일이 존재하지 않습니다."),
 
     /**
      * 3000 : Response오류
