@@ -1,5 +1,6 @@
 package com.save_backend.src.auth;
 
+import com.save_backend.src.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,19 @@ public class AuthDao {
     }
 
 
+    public User getUserByEmail(String email) {
+        String getUserQuery = "SELECT user_idx, user_name, user_phone_number, email, password FROM user WHERE email = ? and status = 'ACTIVE'";
+        String getUserParam = email;
+
+        return this.jdbcTemplate.queryForObject(getUserQuery,
+                (rs, rowNum) -> new User(
+                        rs.getInt("user_idx"),
+                        rs.getString("user_name"),
+                        rs.getString("user_phone_number"),
+                        rs.getString("email"),
+                        rs.getString("password")
+                ), getUserParam);
+    }
 
     /**
      * validation
