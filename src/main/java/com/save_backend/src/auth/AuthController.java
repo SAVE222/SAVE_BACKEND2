@@ -7,8 +7,10 @@ import com.save_backend.src.auth.model.PostLoginReq;
 import com.save_backend.src.auth.model.PostLoginRes;
 import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
@@ -21,7 +23,8 @@ public class AuthController {
     private final AuthProvider authProvider;
     private final AuthService authService;
     private final JwtService jwtService;
-
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Autowired
     public AuthController(AuthProvider authProvider, AuthService authService, JwtService jwtService){
@@ -68,6 +71,36 @@ public class AuthController {
     @GetMapping("/token")
     public BaseResponse<GetUserRes> tokenLogin(){
         try {
+            // jwt 추출
+            String jwtToken = jwtService.getJwt();
+            // 헤더에 jwt token 없을 때
+            if(jwtToken==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+            // jwt 유효성검증(형식과 만료시간)
+            if(!jwtService.validateToken(jwtToken)){
+                return new BaseResponse<>(INVALID_JWT);
+            }
+            int userIdx = authService.tokenLogin(jwtToken);
+
+            // 자동로그인 성공 true 반환
+            String successMessage = "자동로그인에 성공했습니다.";
+            return new BaseResponse<>(new GetUserRes(userIdx,successMessage));
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * 로그아웃
+     */
+    @ResponseBody
+    @GetMapping ("/logout/{userIdx}")
+    public BaseResponse<String> logout(@PathVariable("userIdx") int userIdx){
+        try {
+            // jwt 추출
             String jwtToken = jwtService.getJwt();
             // jwt 없으면 fail
             if(jwtToken==null){
@@ -77,15 +110,10 @@ public class AuthController {
             if(!jwtService.validateToken(jwtToken)){
                 return new BaseResponse<>(INVALID_JWT);
             }
-            // jwt 로 유저인덱스 가져오기
-            int userIdx = jwtService.getUserIdx();
-            // 해당 유저가 Active한지 확인
-            if(authProvider.checkUser(userIdx) == 0){
-                return new BaseResponse<>(NOT_EXIST_USER);
-            }
-            // Active 하다면 자동로그인 성공 true 반환
-            String successMessage = "자동로그인에 성공했습니다.";
-            return new BaseResponse<>(new GetUserRes(userIdx,successMessage));
+
+            authService.logout(userIdx, jwtToken);
+            String logoutMessage = "로그아웃을 성공했습니다";
+            return new BaseResponse<>(logoutMessage);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         } catch (Exception e) {

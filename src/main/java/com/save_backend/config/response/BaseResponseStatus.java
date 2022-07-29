@@ -99,6 +99,7 @@ public enum BaseResponseStatus {
     NOT_EXIST_VIDEO(false,2331,"해당 영상이 존재하지 않습니다."),
     NOT_EXIST_RECORDING(false,2332,"해당 녹음파일이 존재하지 않습니다."),
     INVALID_ACCESS_PASSWORD(false, 2333,"잘못된 비밀번호입니다."),
+    NOT_EXIST_EMAIL(false, 2334,"해당 이메일은 존재하지 않습니다."),
 
 
     /**
@@ -106,7 +107,7 @@ public enum BaseResponseStatus {
      */
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    FAILED_TO_LOGIN(false, 3010,"없는 아이디거나 비밀번호가 틀렸습니다."),
+    FAILED_TO_LOGIN(false, 3010,"로그인이 실패하였습니다."),
 
     MODIFY_FAIL_POST(false, 3020, "게시물 수정에 실패하였습니다."),
     DELETE_FAIL_POST(false, 3021, "게시물 삭제에 실패하였습니다."),
@@ -122,6 +123,9 @@ public enum BaseResponseStatus {
     DOWNLOAD_FAIL_IMAGE(false, 3046, "이미지 다운로드에 실패하였습니다."),
     DOWNLOAD_FAIL_VIDEO(false, 3047, "동영상 다운로드에 실패하였습니다."),
     DOWNLOAD_FAIL_RECORDING(false, 3048, "녹음파일 다운로드에 실패하였습니다."),
+    FAIL_TO_LOGOUT(false,3049,"로그아웃에 실패하였습니다."),
+    AREADY_LOGOUT_USER(false,3050,"이미 로그아웃처리된 유저입니다."),
+
 
 
 

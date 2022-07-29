@@ -86,5 +86,15 @@ public class JwtService {
             throw new BaseException(EMPTY_JWT_CLAIMS);
         }
     }
+
+    /*
+        5. Token 남은 유효시간 계산
+     */
+    public Long getExpiration(String accessToken) {
+        Date expiration = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(accessToken).getBody().getExpiration();
+        // 현재 시간
+        Long now = new Date().getTime();
+        return (expiration.getTime() - now);
+    }
 }
 
