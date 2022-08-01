@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -13,6 +14,9 @@ public class AbuseDao {
 
     private JdbcTemplate jdbcTemplate;
     private List<GetAbuseSuspectRes> getAbuseSuspectRes;
+    private List<GetAbusePicRes> getAbusePicRes;
+    private List<GetAbuseVidRes> getAbuseVidRes;
+    private List<GetAbuseRecRes> getAbuseRecRes;
 
     @Autowired
     public void setDataSource(DataSource dataSource){
@@ -53,7 +57,7 @@ public class AbuseDao {
     }
 
     public GetAbuseRes getAbuseByIdx(int abuseIdx){
-        String getAbuseByIdxQuery = "SELECT abuse_idx, abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc\n" +
+        String getAbuseByIdxQuery = "SELECT abuse_idx, abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc, create_date\n" +
                 "FROM abuse_situation WHERE abuse_idx = ?;";
         int getAbuseByIdxParams = abuseIdx;
         return this.jdbcTemplate.queryForObject(getAbuseByIdxQuery,
@@ -65,6 +69,29 @@ public class AbuseDao {
                         rs.getString("abuse_type"),
                         rs.getString("detail_description"),
                         rs.getString("etc"),
+                        rs.getString("create_date"),
+                        getAbusePicRes = this.jdbcTemplate.query(
+                                "SELECT picture_idx " +
+                                        "FROM picture " +
+                                        "WHERE pic_abuse_idx = ?;\n",
+                                (rk,rownum) -> new GetAbusePicRes(
+                                        rk.getInt("picture_idx")
+                                ),rs.getInt("abuse_idx")
+                        ),
+                        getAbuseVidRes = this.jdbcTemplate.query(
+                                "SELECT video_idx FROM video " +
+                                        "WHERE vid_abuse_idx = ?;\n",
+                                (rk,rownum) -> new GetAbuseVidRes(
+                                        rk.getInt("video_idx")
+                                ),rs.getInt("abuse_idx")
+                        ),
+                        getAbuseRecRes = this.jdbcTemplate.query(
+                                "SELECT recording_idx FROM recording " +
+                                        "WHERE rec_abuse_idx = ?;\n",
+                                (rk,rownum) -> new GetAbuseRecRes(
+                                        rk.getInt("recording_idx")
+                                ),rs.getInt("abuse_idx")
+                        ),
                         getAbuseSuspectRes = this.jdbcTemplate.query(
                                 "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address " +
                                         "FROM suspect as s join situation_suspect_relation as ss on ss.suspect_idx_relation = s.suspect_idx\n" +
@@ -74,7 +101,9 @@ public class AbuseDao {
                                         rk.getString("suspect_gender"),
                                         rk.getString("suspect_age"),
                                         rk.getString("suspect_address")
-                                ),rs.getInt("abuse_idx"))),getAbuseByIdxParams);
+                                ),rs.getInt("abuse_idx")
+                        )
+                ),getAbuseByIdxParams);
     }
 
 

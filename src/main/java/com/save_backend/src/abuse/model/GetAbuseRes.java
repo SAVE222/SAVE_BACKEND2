@@ -18,5 +18,9 @@ public class GetAbuseRes {
     private String type;
     private String detail;
     private String etc;
+    private String createdAt;
+    private List<GetAbusePicRes> pictureIdx;
+    private List<GetAbuseVidRes>  videoIdx;
+    private List<GetAbuseRecRes> recordingIdx;
     private List<GetAbuseSuspectRes> suspect;
 }
