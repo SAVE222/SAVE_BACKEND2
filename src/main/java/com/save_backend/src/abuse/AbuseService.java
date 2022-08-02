@@ -58,7 +58,7 @@ public class AbuseService {
      */
     public void modifyAbuse(int abuseIdx, PatchAbuseReq patchAbuseReq) throws BaseException {
         //존재하는 정황(active)에 대한 modify인지 확인
-        if(abuseProvider.checkChild(abuseIdx) ==0) {
+        if(abuseProvider.checkAbuse(abuseIdx) ==0) {
             throw new BaseException(NOT_EXIST_ABUSE_SITUATION);
         }
 
