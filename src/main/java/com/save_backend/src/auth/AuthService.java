@@ -140,4 +140,28 @@ public class AuthService{
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public void recreatePassword(String email, String tempPassword) throws BaseException {
+        // 이메일 존재여부 확인
+        if(authProvider.checkEmail(email) == 0){
+            throw new BaseException(NOT_EXIST_EMAIL);
+        }
+
+        // 임시 비밀번호 암호화
+        String encryptedTempPassword;
+        try{
+            encryptedTempPassword = passwordEncoder.encode(tempPassword);
+        } catch(Exception e){
+            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        }
+
+        // DB에서 유저 비밀번호를 암호화한 임시비밀번호로 변경
+        try {
+            authDao.recreatePassword(email, encryptedTempPassword);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+
+    }
 }

@@ -39,6 +39,13 @@ public class AuthDao {
         return this.jdbcTemplate.update(modifyPasswordQuery, modifyPasswordParam);
     }
 
+    public int recreatePassword(String email, String encryptedTempPassword) {
+        String modifyPasswordQuery = "UPDATE user SET password = ? WHERE email = ? AND status = 'ACTIVE';";
+        Object[] modifyPasswordParam = new Object[]{encryptedTempPassword, email};
+
+        return this.jdbcTemplate.update(modifyPasswordQuery, modifyPasswordParam);
+    }
+
     /**
      * validation
      */

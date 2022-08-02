@@ -88,7 +88,7 @@ public enum BaseResponseStatus {
      * 존재하지 않는 리소스에 접근시도할 때 : NOT_EXIST_목적어
      * (2300~)
      */
-    INVALID_ACCESS_USER_JWT(false, 2300,"권한이 없는 유저의 접근입니다."),
+    INVALID_ACCESS_USER_JWT(false, 2300,"요청한 유저와 JWT 정보가 일치하지 않습니다."),
     NOT_EXIST_USER(false, 2301, "유저가 존재하지 않습니다."),
 
     NOT_EXIST_CHILD(false,2310,"해당 아동이 존재하지 않습니다."),
