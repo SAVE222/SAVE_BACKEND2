@@ -2,9 +2,8 @@ package com.save_backend.src.auth;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
-import com.save_backend.src.auth.model.GetUserRes;
-import com.save_backend.src.auth.model.PostLoginReq;
-import com.save_backend.src.auth.model.PostLoginRes;
+import com.save_backend.config.response.BaseResponseStatus;
+import com.save_backend.src.auth.model.*;
 import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -114,6 +113,42 @@ public class AuthController {
             authService.logout(userIdx, jwtToken);
             String logoutMessage = "로그아웃을 성공했습니다";
             return new BaseResponse<>(logoutMessage);
+        } catch (BaseException exception) {
+            return new BaseResponse<>(exception.getStatus());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * 비밀번호 변경
+     */
+    @ResponseBody
+    @PatchMapping ("/password/{userIdx}")
+    public BaseResponse<PatchAuthRes> modifyPassword(@PathVariable("userIdx") int userIdx, @RequestBody PatchAuthReq patchAuthReq){
+        try {
+            // jwt 추출
+            String jwtToken = jwtService.getJwt();
+            // jwt 없으면 fail
+            if(jwtToken==null){
+                return new BaseResponse<>(EMPTY_JWT);
+            }
+            // jwt 유효성검증(만료시간)
+            if(!jwtService.validateToken(jwtToken)){
+                return new BaseResponse<>(INVALID_JWT);
+            }
+            // jwt에서 userIdx를 추출해 PathVariable로 받은 userIdx와 일치하는지 확인
+            if(jwtService.getUserIdx() != userIdx) {
+                throw new BaseException(INVALID_ACCESS_USER_JWT);
+            }
+
+            // 비밀번호 형식 확인
+            if(!isValidPassword(patchAuthReq.getNewPassword())){
+                return new BaseResponse<>(BaseResponseStatus.INVALID_PASSWORD);
+            }
+            String newPassword = authService.modifyPassword(userIdx,patchAuthReq);
+            String successMessage = "계정정보변경을 성공했습니다";
+            PatchAuthRes patchAuthRes = new PatchAuthRes(userIdx, newPassword, successMessage);
+            return new BaseResponse<>(patchAuthRes);
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         } catch (Exception e) {

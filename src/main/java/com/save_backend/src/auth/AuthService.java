@@ -1,9 +1,7 @@
 package com.save_backend.src.auth;
 
 import com.save_backend.config.exception.BaseException;
-import com.save_backend.src.auth.model.PostLoginReq;
-import com.save_backend.src.auth.model.PostLoginRes;
-import com.save_backend.src.auth.model.User;
+import com.save_backend.src.auth.model.*;
 import com.save_backend.src.utils.jwt.JwtProperties;
 import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +96,48 @@ public class AuthService{
     public void setDataExpired(String key, Object value, long duration) {
         Duration expireDuration = Duration.ofSeconds(duration);
         redisTemplate.opsForValue().set(key, String.valueOf(value),expireDuration);
+    }
+
+    public String modifyPassword(int userIdx, PatchAuthReq patchAuthReq) throws BaseException  {
+        // 유저 존재여부
+        if(authProvider.checkUser(userIdx) == 0){
+            throw new BaseException(NOT_EXIST_USER);
+        }
+        // 기존 비밀번호와 입력된 비밀번호가 다른지
+        if(patchAuthReq.getNewPassword().equals(patchAuthReq.getOriginPassword())) {
+            throw new BaseException(EXISTS_PASSWORD);
+        }
+
+        // 유저의 기존 비밀번호 가져오기
+        String userPassword;
+        try {
+            userPassword = authDao.getPassword(userIdx);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+        //입력된 기존 비밀번호가 해당 유저의 비밀번호와 일치하는지
+        if(!passwordEncoder.matches(patchAuthReq.getOriginPassword(), userPassword)){
+            throw new BaseException(INVALID_ACCESS_PASSWORD);
+        }
+
+        // 새료 입력받은 비밀번호 암호화
+        String encryptedNewPassword;
+        try{
+            encryptedNewPassword = passwordEncoder.encode(patchAuthReq.getNewPassword());
+        } catch(Exception e){
+            throw new BaseException(PASSWORD_ENCRYPTION_ERROR);
+        }
+
+        // DB의 유저 비밀번호 변경
+        try {
+            int result = authDao.modifyPassword(userIdx, encryptedNewPassword);
+            if(result == 0) {
+                throw new BaseException(MODIFY_FAIL_PASSWORD);
+            }
+            return patchAuthReq.getNewPassword();
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 }

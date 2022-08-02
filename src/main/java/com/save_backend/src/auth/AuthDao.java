@@ -1,5 +1,6 @@
 package com.save_backend.src.auth;
 
+import com.save_backend.src.auth.model.PatchAuthReq;
 import com.save_backend.src.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -31,6 +32,13 @@ public class AuthDao {
                 ), getUserParam);
     }
 
+    public int modifyPassword(int userIdx, String encryptedNewPassword) {
+        String modifyPasswordQuery = "UPDATE user SET password = ? WHERE user_idx = ? AND status = 'ACTIVE';";
+        Object[] modifyPasswordParam = new Object[]{encryptedNewPassword, userIdx};
+
+        return this.jdbcTemplate.update(modifyPasswordQuery, modifyPasswordParam);
+    }
+
     /**
      * validation
      */
@@ -44,5 +52,13 @@ public class AuthDao {
         String checkEmailQuery = "select exists(select email from user where email = ? and status = 'ACTIVE')";
         String checkEmailParams = email;
         return this.jdbcTemplate.queryForObject(checkEmailQuery,int.class,checkEmailParams);
+    }
+
+    public String getPassword(int userIdx){
+        String getPasswordQuery = "select password from user where user_idx = ? and status = 'ACTIVE'";
+        int getPasswordParams = userIdx;
+
+        String passWord =  this.jdbcTemplate.queryForObject(getPasswordQuery,String.class, getPasswordParams);
+        return passWord;
     }
 }

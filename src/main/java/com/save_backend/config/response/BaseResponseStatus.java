@@ -80,6 +80,7 @@ public enum BaseResponseStatus {
      */
     EXISTS_EMAIL(false, 2200,"중복된 이메일입니다."),
     EXISTS_PHONE_NUMBER(false, 2201,"중복된 전화번호입니다."),
+    EXISTS_PASSWORD(false, 2201,"기존 비밀번호와 동일한 비밀번호입니다."),
 
 
     /**
@@ -112,7 +113,7 @@ public enum BaseResponseStatus {
     MODIFY_FAIL_POST(false, 3020, "게시물 수정에 실패하였습니다."),
     DELETE_FAIL_POST(false, 3021, "게시물 삭제에 실패하였습니다."),
 
-    MODIFY_FAIL_SUSPECT(false,3030,"학대행위자 정보 삭제에 실패하였습니다."),
+    MODIFY_FAIL_SUSPECT(false,3030,"학대행위자 정보 수정에 실패하였습니다."),
 
     UPLOAD_FAIL_IMAGE(false, 3040, "이미지 업로드에 실패하였습니다."),
     UPLOAD_FAIL_VIDEO(false, 3041, "동영상 업로드에 실패하였습니다."),
@@ -125,6 +126,8 @@ public enum BaseResponseStatus {
     DOWNLOAD_FAIL_RECORDING(false, 3048, "녹음파일 다운로드에 실패하였습니다."),
     FAIL_TO_LOGOUT(false,3049,"로그아웃에 실패하였습니다."),
     AREADY_LOGOUT_USER(false,3050,"이미 로그아웃처리된 유저입니다."),
+    MODIFY_FAIL_PASSWORD(false,3051,"비밀번호 변경에 실패하였습니다."),
+
 
 
 
