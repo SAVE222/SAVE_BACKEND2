@@ -62,6 +62,13 @@ public class AbuseService {
             throw new BaseException(NOT_EXIST_ABUSE_SITUATION);
         }
 
+        //의심자가 존재(active)하는지 확인
+        for(int i = 0; i < patchAbuseReq.getSuspect().size(); i++) {
+            if(abuseProvider.checkSuspect(patchAbuseReq.getSuspect().get(i))==0){
+                throw new BaseException(NOT_EXIST_SUSPECT);
+            }
+        }
+
         try{
             int editResult = abuseDao.modifyAbuse(patchAbuseReq, abuseIdx);
             if(editResult == 0){
@@ -77,7 +84,6 @@ public class AbuseService {
             }
 
         } catch (Exception exception) {
-            System.out.println("exception = " + exception);
             throw new BaseException(DATABASE_ERROR);
         }
     }

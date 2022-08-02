@@ -2,7 +2,9 @@ package com.save_backend.src.abuse;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.src.abuse.model.GetAbuseRes;
+import com.save_backend.src.abuse.model.PatchAbuseSuspectReq;
 import com.save_backend.src.abuse.model.PostAbuseSuspectReq;
+import com.save_backend.src.suspect.model.PatchSuspectReq;
 import org.springframework.stereotype.Service;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
@@ -41,7 +43,7 @@ public class AbuseProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
-    public int checkSuspect(int suspectIdx) throws BaseException {
+    public int checkSuspect(PatchAbuseSuspectReq suspectIdx) throws BaseException {
         try{
             return abuseDao.checkSuspect(suspectIdx);
         } catch (Exception exception) {

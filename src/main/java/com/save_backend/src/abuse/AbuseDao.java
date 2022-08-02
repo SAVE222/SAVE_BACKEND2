@@ -1,6 +1,7 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.src.abuse.model.*;
+import com.save_backend.src.suspect.model.PatchSuspectReq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -187,9 +188,9 @@ public class AbuseDao {
         int checkChildParams = childIdx;
         return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }
-    public int checkSuspect(int suspectIdx){
+    public int checkSuspect(PatchAbuseSuspectReq patchAbuseSuspectReq){
         String checkSuspectQuery = "select exists(select suspect_idx from suspect where suspect_idx = ? and status = 'ACTIVE')";
-        int checkSuspectParams = suspectIdx;
+        int checkSuspectParams = patchAbuseSuspectReq.getSuspectIdx();
         return this.jdbcTemplate.queryForObject(checkSuspectQuery,int.class,checkSuspectParams);
     }
     public int checkAbuse(int abuseIdx){
