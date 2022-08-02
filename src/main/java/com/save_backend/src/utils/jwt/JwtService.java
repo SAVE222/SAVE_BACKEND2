@@ -1,7 +1,9 @@
 package com.save_backend.src.utils.jwt;
 
 import com.save_backend.config.exception.BaseException;
+import com.save_backend.config.response.BaseResponse;
 import io.jsonwebtoken.*;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -70,19 +72,29 @@ public class JwtService {
     /*
         4. Jwt 토큰 유효성 검사
      */
-    public static boolean validateToken(String token) throws Exception {
+    public boolean validateToken(String jwtToken) throws Exception {
+        // jwt token 유무
+        if(jwtToken==null){
+            throw new BaseException(EMPTY_JWT);
+        }
+
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             return true;
         } catch (SignatureException ex) {
+            // jwt 서명 유효성
             throw new BaseException(INVALID_JWT_SIGNATURE);
         } catch (MalformedJwtException ex) {
+            // jwt 형식
             throw new BaseException(INVALID_JWT);
         } catch (ExpiredJwtException ex) {
+            // jwt 만료시간
             throw new BaseException(INVALID_JWT_EXPIRED_TIME);
         } catch (UnsupportedJwtException ex) {
+            // jwt 지원형식
             throw new BaseException(INVALID_UNSUPPORTED_JWT);
         } catch (IllegalArgumentException ex) {
+            // jwt claims 유무
             throw new BaseException(EMPTY_JWT_CLAIMS);
         }
     }

@@ -6,6 +6,7 @@ import com.save_backend.src.utils.jwt.JwtProperties;
 import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,24 +40,26 @@ public class AuthService{
 
     public PostLoginRes login(PostLoginReq postLoginReq, HttpServletResponse response) throws BaseException {
         // 이메일을 통해 유저정보 가져오기
-        try{
-            User user = authDao.getUserByEmail(postLoginReq.getEmail());
-            // 이메일 존재 여부 확인
-            if(authProvider.checkEmail(user.getEmail()) == 0){
-                throw new BaseException(NOT_EXIST_EMAIL);
-            }
-            String userPwd = user.getPassword();
-            if(passwordEncoder.matches(postLoginReq.getPassword(), userPwd)){
-                // 동일하면 jwt 발급
-                int userIdx = user.getUserIdx();
-                String jwt = JwtProperties.TOKEN_PREFIX + jwtService.createJwt(userIdx);
+        User user = authDao.getUserByEmail(postLoginReq.getEmail());
+        // 이메일 존재 여부 확인
+        if(authProvider.checkEmail(user.getEmail()) == 0){
+            throw new BaseException(NOT_EXIST_EMAIL);
+        }
 
-                // 발급받은 jwt를 응답헤더에 추가
-                response.setHeader(JwtProperties.HEADER_STRING, jwt);
-                return new PostLoginRes(userIdx, jwt);
-            } else {
-                throw new BaseException(INVALID_ACCESS_PASSWORD);
-            }
+        // 비밀번호 일치 여부 확인
+        String userPwd = user.getPassword();
+        String jwt;
+        if(passwordEncoder.matches(postLoginReq.getPassword(), userPwd)){
+            // 동일하면 jwt 발급
+            jwt = JwtProperties.TOKEN_PREFIX + jwtService.createJwt(user.getUserIdx());
+        } else {
+            throw new BaseException(INVALID_ACCESS_PASSWORD);
+        }
+
+        // 발급받은 jwt를 응답헤더에 추가
+        try{
+            response.setHeader(JwtProperties.HEADER_STRING, jwt);
+            return new PostLoginRes(user.getUserIdx(), jwt);
         } catch (Exception exception) {
             throw new BaseException(FAILED_TO_LOGIN);
         }
@@ -89,8 +92,12 @@ public class AuthService{
             throw new BaseException(AREADY_LOGOUT_USER);
         }
         // 토큰 남은시간 계산후 해당 시간만큼 만료시간을 정해 해당 토큰을 Redis에 저장
-        Long expiration = jwtService.getExpiration(jwtToken);
-        setDataExpired(LOGOUT_FREFIX +jwtToken, jwtToken, expiration);
+        try {
+            Long expiration = jwtService.getExpiration(jwtToken);
+            setDataExpired(LOGOUT_FREFIX +jwtToken, jwtToken, expiration);
+        } catch (Exception exception) {
+            throw new BaseException(REDIS_ERROR);
+        }
     }
 
     public void setDataExpired(String key, Object value, long duration) {

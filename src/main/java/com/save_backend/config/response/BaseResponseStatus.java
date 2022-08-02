@@ -137,6 +137,7 @@ public enum BaseResponseStatus {
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
     SERVER_ERROR(false, 4001, "서버와의 연결에 실패하였습니다."),
+    REDIS_ERROR(false, 4002, "Redis 서버와의 연결에 실패하였습니다."),
 
 
     PASSWORD_ENCRYPTION_ERROR(false, 4010, "비밀번호 암호화에 실패하였습니다."),
