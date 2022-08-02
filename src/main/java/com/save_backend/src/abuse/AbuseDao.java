@@ -1,15 +1,13 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.src.abuse.model.*;
-import com.save_backend.src.child.model.PatchChildEditReq;
-import com.save_backend.src.child.model.PatchChildEditRes;
-import com.save_backend.src.suspect.model.GetSuspectRes;
+import com.save_backend.src.suspect.model.PatchSuspectReq;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -17,6 +15,9 @@ public class AbuseDao {
 
     private JdbcTemplate jdbcTemplate;
     private List<GetAbuseSuspectRes> getAbuseSuspectRes;
+    private List<GetAbusePicRes> getAbusePicRes;
+    private List<GetAbuseVidRes> getAbuseVidRes;
+    private List<GetAbuseRecRes> getAbuseRecRes;
 
     @Autowired
     public void setDataSource(DataSource dataSource){
@@ -57,7 +58,7 @@ public class AbuseDao {
     }
 
     public GetAbuseRes getAbuseByIdx(int abuseIdx){
-        String getAbuseByIdxQuery = "SELECT abuse_idx, abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc\n" +
+        String getAbuseByIdxQuery = "SELECT abuse_idx, abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc, create_date\n" +
                 "FROM abuse_situation WHERE abuse_idx = ?;";
         int getAbuseByIdxParams = abuseIdx;
         return this.jdbcTemplate.queryForObject(getAbuseByIdxQuery,
@@ -69,6 +70,29 @@ public class AbuseDao {
                         rs.getString("abuse_type"),
                         rs.getString("detail_description"),
                         rs.getString("etc"),
+                        rs.getString("create_date"),
+                        getAbusePicRes = this.jdbcTemplate.query(
+                                "SELECT picture_idx " +
+                                        "FROM picture " +
+                                        "WHERE pic_abuse_idx = ?;\n",
+                                (rk,rownum) -> new GetAbusePicRes(
+                                        rk.getInt("picture_idx")
+                                ),rs.getInt("abuse_idx")
+                        ),
+                        getAbuseVidRes = this.jdbcTemplate.query(
+                                "SELECT video_idx FROM video " +
+                                        "WHERE vid_abuse_idx = ?;\n",
+                                (rk,rownum) -> new GetAbuseVidRes(
+                                        rk.getInt("video_idx")
+                                ),rs.getInt("abuse_idx")
+                        ),
+                        getAbuseRecRes = this.jdbcTemplate.query(
+                                "SELECT recording_idx FROM recording " +
+                                        "WHERE rec_abuse_idx = ?;\n",
+                                (rk,rownum) -> new GetAbuseRecRes(
+                                        rk.getInt("recording_idx")
+                                ),rs.getInt("abuse_idx")
+                        ),
                         getAbuseSuspectRes = this.jdbcTemplate.query(
                                 "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address " +
                                         "FROM suspect as s join situation_suspect_relation as ss on ss.suspect_idx_relation = s.suspect_idx\n" +
@@ -78,7 +102,81 @@ public class AbuseDao {
                                         rk.getString("suspect_gender"),
                                         rk.getString("suspect_age"),
                                         rk.getString("suspect_address")
-                                ),rs.getInt("abuse_idx"))),getAbuseByIdxParams);
+                                ),rs.getInt("abuse_idx")
+                        )
+                ),getAbuseByIdxParams);
+    }
+
+
+    public int modifyAbuse(PatchAbuseReq patchAbuseReq, int abuseIdx){
+        //학대 유형 list -> string 변환
+        List<String> type = patchAbuseReq.getType();
+        StringBuilder sb = new StringBuilder();
+        for (String s : type) {
+            sb.append(s);
+            sb.append(",");
+        }
+        String typeStr = sb.toString();
+
+        String modifyAbuseQuery = "UPDATE abuse_situation " +
+                "SET abuse_date = ?, abuse_time = ?, abuse_place = ?, abuse_type = ?, detail_description = ?, etc = ?, edit_date = current_date\n" +
+                "WHERE abuse_idx = ?;";
+
+        Object[] modifyAbuseParams = new Object[]{
+                patchAbuseReq.getDate(),
+                patchAbuseReq.getTime(),
+                patchAbuseReq.getPlace(),
+                typeStr,
+                patchAbuseReq.getDetail(),
+                patchAbuseReq.getEtc(),
+                abuseIdx
+        };
+
+        return this.jdbcTemplate.update(modifyAbuseQuery, modifyAbuseParams);
+    }
+
+    public void deleteAbuseSuspect(int abuseIdx) {
+        String deleteAbuseSuspectQuery = "delete from situation_suspect_relation where abuse_idx_relation = ?";
+        int deleteAbuseParam = abuseIdx;
+
+        this.jdbcTemplate.update(deleteAbuseSuspectQuery, deleteAbuseParam);
+    }
+
+    public int modifyAbuseSuspect(int abuseIdx, PatchAbuseSuspectReq patchAbuseSuspectReq) {
+        String modifyAbuseSuspectQuery = "insert into situation_suspect_relation(abuse_idx_relation, suspect_idx_relation) " +
+                "VALUES (?, ?)";
+        Object[] modifyAbuseSuspectParams = new Object[]{
+                abuseIdx,
+                patchAbuseSuspectReq.getSuspectIdx()
+        };
+        this.jdbcTemplate.update(modifyAbuseSuspectQuery, modifyAbuseSuspectParams);
+
+        String lastInserIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+    }
+
+
+    public PatchAbuseDelRes deleteAbuse(int abuseIdx) {
+
+        String getAbuseByIdxQuery =
+                "SELECT abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc\n" +
+                        "FROM abuse_situation WHERE abuse_idx = ?;";
+
+        String deleteAbuseQuery = "update abuse_situation set status = 'INACTIVE' where abuse_idx = ?";
+        int deleteAbuseParam = abuseIdx;
+
+        this.jdbcTemplate.update(deleteAbuseQuery, deleteAbuseParam);
+
+        return this.jdbcTemplate.queryForObject(getAbuseByIdxQuery,
+                (rs, rowNum) -> new PatchAbuseDelRes(
+                        rs.getString("abuse_date"),
+                        rs.getString("abuse_time"),
+                        rs.getString("abuse_place"),
+                        rs.getString("abuse_type"),
+                        rs.getString("detail_description"),
+                        rs.getString("etc"),
+                        "학대 정황 삭제가 완료되었습니다."
+                ), deleteAbuseParam);
     }
 
 
@@ -90,9 +188,9 @@ public class AbuseDao {
         int checkChildParams = childIdx;
         return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }
-    public int checkSuspect(int suspectIdx){
+    public int checkSuspect(PatchAbuseSuspectReq patchAbuseSuspectReq){
         String checkSuspectQuery = "select exists(select suspect_idx from suspect where suspect_idx = ? and status = 'ACTIVE')";
-        int checkSuspectParams = suspectIdx;
+        int checkSuspectParams = patchAbuseSuspectReq.getSuspectIdx();
         return this.jdbcTemplate.queryForObject(checkSuspectQuery,int.class,checkSuspectParams);
     }
     public int checkAbuse(int abuseIdx){
