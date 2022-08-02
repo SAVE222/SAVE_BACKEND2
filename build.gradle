@@ -33,10 +33,14 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     implementation 'org.springframework.boot:spring-boot-starter-jdbc'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+
+    /* Redis */
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'redis.clients:jedis:3.3.0'
+
 
     /* SECURITY */
     implementation 'org.springframework.boot:spring-boot-starter-security'

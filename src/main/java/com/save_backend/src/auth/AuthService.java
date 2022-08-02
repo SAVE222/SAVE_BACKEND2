@@ -1,16 +1,13 @@
 package com.save_backend.src.auth;
 
 import com.save_backend.config.exception.BaseException;
-import com.save_backend.config.response.BaseResponse;
 import com.save_backend.src.auth.model.PostLoginReq;
 import com.save_backend.src.auth.model.PostLoginRes;
 import com.save_backend.src.auth.model.User;
 import com.save_backend.src.utils.jwt.JwtProperties;
 import com.save_backend.src.utils.jwt.JwtService;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +43,10 @@ public class AuthService{
         // 이메일을 통해 유저정보 가져오기
         try{
             User user = authDao.getUserByEmail(postLoginReq.getEmail());
-            // TODO : 이메일 존재 여부 확인
+            // 이메일 존재 여부 확인
+            if(authProvider.checkEmail(user.getEmail()) == 0){
+                throw new BaseException(NOT_EXIST_EMAIL);
+            }
             String userPwd = user.getPassword();
             if(passwordEncoder.matches(postLoginReq.getPassword(), userPwd)){
                 // 동일하면 jwt 발급
@@ -81,7 +81,11 @@ public class AuthService{
         return userIdx;
     }
 
-    public void logout(int userIdx,String jwtToken) throws BaseException {
+    public void logout(int userIdx, String jwtToken) throws BaseException {
+        // jwt에서 userIdx를 추출해 PathVariable로 받은 userIdx와 일치하는지 확인
+        if(jwtService.getUserIdx() != userIdx) {
+            throw new BaseException(INVALID_ACCESS_USER_JWT);
+        }
         // Redis에 token 존재하는지 확인 -> 없으면 성공, 있으면 실패
         if(redisTemplate.opsForValue().get(LOGOUT_FREFIX + jwtToken) != null) {
             throw new BaseException(AREADY_LOGOUT_USER);

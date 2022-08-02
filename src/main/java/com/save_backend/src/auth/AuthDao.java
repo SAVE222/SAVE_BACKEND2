@@ -39,4 +39,10 @@ public class AuthDao {
         int checkUserParams = userIdx;
         return this.jdbcTemplate.queryForObject(checkUserQuery,int.class,checkUserParams);
     }
+
+    public int checkEmail(String email){
+        String checkEmailQuery = "select exists(select email from user where email = ? and status = 'ACTIVE')";
+        String checkEmailParams = email;
+        return this.jdbcTemplate.queryForObject(checkEmailQuery,int.class,checkEmailParams);
+    }
 }
