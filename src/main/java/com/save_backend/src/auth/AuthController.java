@@ -27,13 +27,13 @@ public class AuthController {
     private final MailService mailService;
 
     @Autowired
-    public AuthController(AuthProvider authProvider, AuthService authService, JwtService jwtService, RedisTemplate<String, String> redisTemplate, MailService mailService){
+    public AuthController(AuthProvider authProvider, AuthService authService, JwtService jwtService, RedisTemplate<String, String> redisTemplate, MailService mailService) {
         this.authProvider = authProvider;
         this.authService = authService;
         this.jwtService = jwtService;
         this.redisTemplate = redisTemplate;
         this.mailService = mailService;
-
+    }
 
     /**
      * 로그인 API
