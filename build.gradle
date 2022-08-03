@@ -41,8 +41,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'redis.clients:jedis:3.3.0'
 
+
     /* SMTP(mail) */
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
 
     /* SECURITY */
     implementation 'org.springframework.boot:spring-boot-starter-security'

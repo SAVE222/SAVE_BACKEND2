@@ -1,5 +1,6 @@
 package com.save_backend.src.auth;
 
+
 import com.save_backend.src.auth.model.PatchAuthReq;
 import com.save_backend.src.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ public class AuthDao {
                 ), getUserParam);
     }
 
+
     public int modifyPassword(int userIdx, String encryptedNewPassword) {
         String modifyPasswordQuery = "UPDATE user SET password = ? WHERE user_idx = ? AND status = 'ACTIVE';";
         Object[] modifyPasswordParam = new Object[]{encryptedNewPassword, userIdx};
@@ -45,6 +47,7 @@ public class AuthDao {
 
         return this.jdbcTemplate.update(modifyPasswordQuery, modifyPasswordParam);
     }
+
 
     /**
      * validation

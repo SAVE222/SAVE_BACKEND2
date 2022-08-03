@@ -33,7 +33,7 @@ public class AuthController {
         this.jwtService = jwtService;
         this.redisTemplate = redisTemplate;
         this.mailService = mailService;
-    }
+
 
     /**
      * 로그인 API
@@ -119,6 +119,7 @@ public class AuthController {
             throw new RuntimeException(e);
         }
     }
+    
     /**
      * 비밀번호 변경
      */
@@ -145,6 +146,7 @@ public class AuthController {
             String successMessage = "비밀번호 변경을 성공했습니다";
             PatchAuthRes patchAuthRes = new PatchAuthRes(userIdx, newPassword, successMessage);
             return new BaseResponse<>(patchAuthRes);
+
         } catch (BaseException exception) {
             return new BaseResponse<>(exception.getStatus());
         } catch (Exception e) {
@@ -180,5 +182,6 @@ public class AuthController {
             return new BaseResponse<>(exception.getStatus());
         }
     }
+
 
 }

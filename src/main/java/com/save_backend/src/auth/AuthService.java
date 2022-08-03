@@ -7,6 +7,7 @@ import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.parameters.P;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,7 @@ public class AuthService{
         this.authProvider = authProvider;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
+
     }
 
 
@@ -146,6 +148,7 @@ public class AuthService{
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
+
     }
 
     public void recreatePassword(String email, String tempPassword) throws BaseException {
@@ -168,7 +171,6 @@ public class AuthService{
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
-
 
     }
 }
