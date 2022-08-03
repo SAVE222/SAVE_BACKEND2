@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+
 @Service
 public class MailService {
     @Autowired
@@ -42,7 +43,7 @@ public class MailService {
     }
 
     // 메일 전송 함수
-    public void mailSend(MailDTO mailDTO, String userMail){
+    public void mailSend(MailDTO mailDTO, String userMail) {
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");  // true는 멀티파트 메세지를 사용하겠다는 의미

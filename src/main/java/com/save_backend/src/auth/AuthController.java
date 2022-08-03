@@ -2,7 +2,6 @@ package com.save_backend.src.auth;
 
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
-import com.save_backend.config.response.BaseResponseStatus;
 import com.save_backend.src.auth.model.*;
 import com.save_backend.src.utils.jwt.JwtService;
 import com.save_backend.src.utils.mail.MailDTO;

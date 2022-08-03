@@ -125,12 +125,12 @@ public class AuthService{
             throw new BaseException(DATABASE_ERROR);
         }
 
-        //입력된 기존 비밀번호가 해당 유저의 비밀번호와 일치하는지
+        // 입력된 기존 비밀번호가 해당 유저의 비밀번호와 일치하는지
         if(!passwordEncoder.matches(patchAuthReq.getOriginPassword(), userPassword)){
             throw new BaseException(INVALID_ACCESS_PASSWORD);
         }
 
-        // 새료 입력받은 비밀번호 암호화
+        // 새로 입력받은 비밀번호 암호화
         String encryptedNewPassword;
         try{
             encryptedNewPassword = passwordEncoder.encode(patchAuthReq.getNewPassword());
