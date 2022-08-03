@@ -25,4 +25,11 @@ public class AuthProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+    public int checkEmail(String email) throws BaseException {
+        try{
+            return authDao.checkEmail(email);
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

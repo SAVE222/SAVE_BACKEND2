@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/test")
 public class TestController {
@@ -38,5 +40,18 @@ public class TestController {
         logger.error("ERROR Level 테스트");
 
         return "Success Test";
+    }
+
+    /**
+     * redis test
+     * @param session
+     * @return
+     */
+    @RequestMapping("/redis")
+    public String test1(HttpSession session) {
+
+        session.setAttribute("email","test");
+
+        return "test";
     }
 }

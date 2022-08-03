@@ -22,7 +22,10 @@ public enum BaseResponseStatus {
     // 계정관련(2000~)
     REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
     EMPTY_JWT(false, 2001, "JWT를 입력해주세요."),
-    EMPTY_PASSWORD(false, 2002, "비밀번호를 입력해주세요."),
+    EMPTY_JWT_CLAIMS(false, 2002, "JWT claims string이 비었습니다."),
+
+    EMPTY_PASSWORD(false, 2003, "비밀번호를 입력해주세요."),
+    EMPTY_EMAIL(false, 2004, "이메일을 입력해주세요."),
 
 
     // User (2010~)
@@ -66,6 +69,10 @@ public enum BaseResponseStatus {
     INVALID_EMAIL(false, 2103, "이메일 형식을 확인해주세요."),
     INVALID_GENDER(false,2104,"유효하지 않은 성별값입니다."),
     INVALID_CONTENTS_COUNT(false, 2105, "내용의 글자수를 확인해주세요."),
+    INVALID_JWT_SIGNATURE(false, 2106, "JWT 서명이 유효하지 않습니다."),
+    INVALID_JWT_EXPIRED_TIME(false, 2107, "JWT 유효기간이 만료되었습니다."),
+    INVALID_UNSUPPORTED_JWT(false, 2108, "지원하지 않는 JWT 형식입니다."),
+
 
     /**
      * 3. 이미 존재하는 리소스와 중복된 값일 때(2200~)
@@ -91,13 +98,16 @@ public enum BaseResponseStatus {
     NOT_EXIST_PICTURE(false,2330,"해당 사진이 존재하지 않습니다."),
     NOT_EXIST_VIDEO(false,2331,"해당 영상이 존재하지 않습니다."),
     NOT_EXIST_RECORDING(false,2332,"해당 녹음파일이 존재하지 않습니다."),
+    INVALID_ACCESS_PASSWORD(false, 2333,"잘못된 비밀번호입니다."),
+    NOT_EXIST_EMAIL(false, 2334,"해당 이메일은 존재하지 않습니다."),
+
 
     /**
      * 3000 : Response오류
      */
     RESPONSE_ERROR(false, 3000, "값을 불러오는데 실패하였습니다."),
 
-    FAILED_TO_LOGIN(false, 3010,"없는 아이디거나 비밀번호가 틀렸습니다."),
+    FAILED_TO_LOGIN(false, 3010,"로그인이 실패하였습니다."),
 
     MODIFY_FAIL_POST(false, 3020, "게시물 수정에 실패하였습니다."),
     DELETE_FAIL_POST(false, 3021, "게시물 삭제에 실패하였습니다."),
@@ -113,6 +123,9 @@ public enum BaseResponseStatus {
     DOWNLOAD_FAIL_IMAGE(false, 3046, "이미지 다운로드에 실패하였습니다."),
     DOWNLOAD_FAIL_VIDEO(false, 3047, "동영상 다운로드에 실패하였습니다."),
     DOWNLOAD_FAIL_RECORDING(false, 3048, "녹음파일 다운로드에 실패하였습니다."),
+    FAIL_TO_LOGOUT(false,3049,"로그아웃에 실패하였습니다."),
+    AREADY_LOGOUT_USER(false,3050,"이미 로그아웃처리된 유저입니다."),
+
 
 
 

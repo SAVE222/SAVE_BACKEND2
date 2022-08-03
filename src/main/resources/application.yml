@@ -10,3 +10,8 @@ spring:
     username: save
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  redis:
+#    TODO : ec2 이용해 서버배포할 때 aws-redis 엔드포인트로 변경해주기
+    host: localhost
+    port: 6379
