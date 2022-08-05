@@ -15,6 +15,6 @@ public class PatchAbuseReq {
     private String place;
     private String detail;
     private String etc;  //선택
-    private List<String> type;
-    private List<PatchAbuseSuspectReq> suspect;
+    private String type;
+    private int suspectIdx;
 }

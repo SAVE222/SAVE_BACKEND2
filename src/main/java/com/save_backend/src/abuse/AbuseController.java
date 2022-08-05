@@ -50,13 +50,13 @@ public class AbuseController {
             if (postAbuseReq.getDetail() == null) {
                 return new BaseResponse<>(EMPTY_ABUSE_DESCRIPTION);
             }
-            //학대 의심자 선택 필수
-            if (postAbuseReq.getSuspect().size() < 1) {
-                return new BaseResponse<>(EMPTY_SUSPECT_INDEX);
-            }
             // 학대유형 선택 필수
-            if (postAbuseReq.getType().size() < 1) {
+            if (postAbuseReq.getType() == null) {
                 return new BaseResponse<>(EMPTY_ABUSE_TYPE);
+            }
+            //학대 의심자 선택 필수
+            if (postAbuseReq.getSuspectIdx() == 0) {
+                return new BaseResponse<>(EMPTY_SUSPECT_INDEX);
             }
 
             PostAbuseRes postAbuseRes = abuseService.createAbuse(postAbuseReq);
@@ -103,7 +103,7 @@ public class AbuseController {
             return new BaseResponse<>(EMPTY_ABUSE_DESCRIPTION);
         }
         // 학대유형 선택 필수
-        if (patchAbuseReq.getType().size() < 1) {
+        if (patchAbuseReq.getType() == null) {
             return new BaseResponse<>(EMPTY_ABUSE_TYPE);
         }
         try {
