@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -22,5 +24,5 @@ public class GetAbuseRes {
     private List<GetAbusePicRes> pictureIdx;
     private List<GetAbuseVidRes>  videoIdx;
     private List<GetAbuseRecRes> recordingIdx;
-    private List<GetAbuseSuspectRes> suspect;
+    private GetAbuseSuspectRes suspect;
 }

@@ -14,7 +14,7 @@ import java.util.List;
 public class AbuseDao {
 
     private JdbcTemplate jdbcTemplate;
-    private List<GetAbuseSuspectRes> getAbuseSuspectRes;
+    private GetAbuseSuspectRes getAbuseSuspectRes;
     private List<GetAbusePicRes> getAbusePicRes;
     private List<GetAbuseVidRes> getAbuseVidRes;
     private List<GetAbuseRecRes> getAbuseRecRes;
@@ -25,15 +25,15 @@ public class AbuseDao {
     }
 
 
-    public int insertAbuse(String typeStr, PostAbuseReq postAbuseReq) {
-        String insertAbuseQuery = "insert into abuse_situation(abuse_type, abuse_child_idx, abuse_date, abuse_time, abuse_place, detail_description, etc) " +
+    public int insertAbuse(PostAbuseReq postAbuseReq) {
+        String insertAbuseQuery = "insert into abuse_situation(abuse_child_idx, abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc) " +
                 "VALUES (?, ?, ? ,?, ?, ?, ?);";
         Object[] insertAbuseParams = new Object[]{
-                typeStr,
                 postAbuseReq.getChildIdx(),
                 postAbuseReq.getDate(),
                 postAbuseReq.getTime(),
                 postAbuseReq.getPlace(),
+                postAbuseReq.getType(),
                 postAbuseReq.getDetail(),
                 postAbuseReq.getEtc()
         };
@@ -44,12 +44,12 @@ public class AbuseDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
     }
 
-    public int insertAbuseSuspect(int abuseIdx, PostAbuseSuspectReq postAbuseSuspectReq) {
+    public int insertAbuseSuspect(int abuseIdx, int suspectIdx) {
         String insertAbuseSuspectQuery = "insert into situation_suspect_relation(abuse_idx_relation, suspect_idx_relation) " +
                 "VALUES (?, ?)";
         Object[] insertAbuseSuspectParams = new Object[]{
                 abuseIdx,
-                postAbuseSuspectReq.getSuspectIdx()
+                suspectIdx
         };
         this.jdbcTemplate.update(insertAbuseSuspectQuery, insertAbuseSuspectParams);
 
@@ -93,7 +93,7 @@ public class AbuseDao {
                                         rk.getInt("recording_idx")
                                 ),rs.getInt("abuse_idx")
                         ),
-                        getAbuseSuspectRes = this.jdbcTemplate.query(
+                        getAbuseSuspectRes = this.jdbcTemplate.queryForObject(
                                 "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address " +
                                         "FROM suspect as s join situation_suspect_relation as ss on ss.suspect_idx_relation = s.suspect_idx\n" +
                                         "        WHERE ss.abuse_idx_relation = ?;\n",
@@ -109,14 +109,6 @@ public class AbuseDao {
 
 
     public int modifyAbuse(PatchAbuseReq patchAbuseReq, int abuseIdx){
-        //학대 유형 list -> string 변환
-        List<String> type = patchAbuseReq.getType();
-        StringBuilder sb = new StringBuilder();
-        for (String s : type) {
-            sb.append(s);
-            sb.append(",");
-        }
-        String typeStr = sb.toString();
 
         String modifyAbuseQuery = "UPDATE abuse_situation " +
                 "SET abuse_date = ?, abuse_time = ?, abuse_place = ?, abuse_type = ?, detail_description = ?, etc = ?, edit_date = current_date\n" +
@@ -126,7 +118,7 @@ public class AbuseDao {
                 patchAbuseReq.getDate(),
                 patchAbuseReq.getTime(),
                 patchAbuseReq.getPlace(),
-                typeStr,
+                patchAbuseReq.getType(),
                 patchAbuseReq.getDetail(),
                 patchAbuseReq.getEtc(),
                 abuseIdx
@@ -135,24 +127,17 @@ public class AbuseDao {
         return this.jdbcTemplate.update(modifyAbuseQuery, modifyAbuseParams);
     }
 
-    public void deleteAbuseSuspect(int abuseIdx) {
-        String deleteAbuseSuspectQuery = "delete from situation_suspect_relation where abuse_idx_relation = ?";
-        int deleteAbuseParam = abuseIdx;
+    public int modifyAbuseSuspect(int suspectIdx, int abuseIdx){
 
-        this.jdbcTemplate.update(deleteAbuseSuspectQuery, deleteAbuseParam);
-    }
+        String modifyAbuseSuspectQuery = "UPDATE situation_suspect_relation " +
+                "SET suspect_idx_relation = ? WHERE abuse_idx_relation = ?;";
 
-    public int modifyAbuseSuspect(int abuseIdx, PatchAbuseSuspectReq patchAbuseSuspectReq) {
-        String modifyAbuseSuspectQuery = "insert into situation_suspect_relation(abuse_idx_relation, suspect_idx_relation) " +
-                "VALUES (?, ?)";
         Object[] modifyAbuseSuspectParams = new Object[]{
-                abuseIdx,
-                patchAbuseSuspectReq.getSuspectIdx()
+                suspectIdx,
+                abuseIdx
         };
-        this.jdbcTemplate.update(modifyAbuseSuspectQuery, modifyAbuseSuspectParams);
 
-        String lastInserIdQuery = "select last_insert_id()";
-        return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
+        return this.jdbcTemplate.update(modifyAbuseSuspectQuery, modifyAbuseSuspectParams);
     }
 
 
@@ -188,9 +173,9 @@ public class AbuseDao {
         int checkChildParams = childIdx;
         return this.jdbcTemplate.queryForObject(checkChildQuery,int.class,checkChildParams);
     }
-    public int checkSuspect(PatchAbuseSuspectReq patchAbuseSuspectReq){
+    public int checkSuspect(int suspectIdx){
         String checkSuspectQuery = "select exists(select suspect_idx from suspect where suspect_idx = ? and status = 'ACTIVE')";
-        int checkSuspectParams = patchAbuseSuspectReq.getSuspectIdx();
+        int checkSuspectParams = suspectIdx;
         return this.jdbcTemplate.queryForObject(checkSuspectQuery,int.class,checkSuspectParams);
     }
     public int checkAbuse(int abuseIdx){

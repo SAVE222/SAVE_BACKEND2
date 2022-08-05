@@ -1,10 +1,7 @@
 package com.save_backend.src.abuse;
 
 import com.save_backend.config.exception.BaseException;
-import com.save_backend.src.abuse.model.PatchAbuseDelRes;
-import com.save_backend.src.abuse.model.PatchAbuseReq;
-import com.save_backend.src.abuse.model.PostAbuseReq;
-import com.save_backend.src.abuse.model.PostAbuseRes;
+import com.save_backend.src.abuse.model.*;
 import com.save_backend.src.child.model.PatchChildDelRes;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +13,7 @@ import static com.save_backend.config.response.BaseResponseStatus.*;
 public class AbuseService {
     private final AbuseProvider abuseProvider;
     private final AbuseDao abuseDao;
+
 
     public AbuseService(AbuseProvider abuseProvider, AbuseDao abuseDao) {
         this.abuseProvider = abuseProvider;
@@ -30,22 +28,16 @@ public class AbuseService {
         if(abuseProvider.checkChild(postAbuseReq.getChildIdx())==0){
             throw new BaseException(NOT_EXIST_CHILD);
         }
+        //존재하는 학대의심자에 대한 입력인지
+        if(abuseProvider.checkSuspect(postAbuseReq.getSuspectIdx())==0){
+            throw new BaseException(NOT_EXIST_SUSPECT);
+        }
         try{
-            //학대 유형 list -> string 변환
-            List<String> type = postAbuseReq.getType();
-            StringBuilder sb = new StringBuilder();
-            for (String s : type) {
-                sb.append(s);
-                sb.append(",");
-            }
-            String typeStr = sb.toString();
-
-            int abuseIdx = abuseDao.insertAbuse(typeStr, postAbuseReq);
+            int abuseIdx = abuseDao.insertAbuse(postAbuseReq);
 
             //학대정황-의심자 테이블에 추가
-            for(int i = 0; i < postAbuseReq.getSuspect().size(); i++) {
-                abuseDao.insertAbuseSuspect(abuseIdx, postAbuseReq.getSuspect().get(i));
-            }
+            abuseDao.insertAbuseSuspect(abuseIdx, postAbuseReq.getSuspectIdx());
+
             return new PostAbuseRes(abuseIdx);
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
@@ -63,10 +55,8 @@ public class AbuseService {
         }
 
         //의심자가 존재(active)하는지 확인
-        for(int i = 0; i < patchAbuseReq.getSuspect().size(); i++) {
-            if(abuseProvider.checkSuspect(patchAbuseReq.getSuspect().get(i))==0){
-                throw new BaseException(NOT_EXIST_SUSPECT);
-            }
+        if(abuseProvider.checkSuspect(patchAbuseReq.getSuspectIdx())==0){
+            throw new BaseException(NOT_EXIST_SUSPECT);
         }
 
         try{
@@ -75,13 +65,8 @@ public class AbuseService {
                 throw new BaseException(MODIFY_FAIL_POST);
             }
 
-            //학대-의심자 테이블에서 abuseIdx 일치하는 값 삭제 후 수정 진행
-            abuseDao.deleteAbuseSuspect(abuseIdx);
-
-            //학대정황-의심자 테이블 수정(추가)
-            for(int i = 0; i < patchAbuseReq.getSuspect().size(); i++) {
-                abuseDao.modifyAbuseSuspect(abuseIdx, patchAbuseReq.getSuspect().get(i));
-            }
+            //학대-의심자 테이블에서 abuseIdx 일치하는 값 업데이트
+            abuseDao.modifyAbuseSuspect(patchAbuseReq.getSuspectIdx(), abuseIdx);
 
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
