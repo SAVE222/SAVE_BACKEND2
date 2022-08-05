@@ -16,7 +16,7 @@ public class SuspectListDao {
 
     public List<GetSuspectListRes> getSuspectList(int childIdx) {
         String getSuspectListQuery =
-                "select suspect_idx, suspect_name, suspect_gender, suspect_age, suspect_address, relation_with_child from suspect " +
+                "select suspect_idx, suspect_name, suspect_gender, suspect_age, suspect_address, suspect_detail_address, relation_with_child from suspect " +
                 "where status = 'ACTIVE' and child_idx = ? ";
 
         return this.jdbcTemplate.query(getSuspectListQuery,
@@ -26,6 +26,7 @@ public class SuspectListDao {
                         resultSet.getString("suspect_gender"),
                         resultSet.getString("suspect_age"),
                         resultSet.getString("suspect_address"),
+                        resultSet.getString("suspect_detail_address"),
                         resultSet.getString("relation_with_child")
                 ), childIdx);
     }
