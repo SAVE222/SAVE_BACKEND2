@@ -162,11 +162,19 @@ public class AbuseDao {
                 "SELECT abuse_date, abuse_time, abuse_place, abuse_type, detail_description, etc\n" +
                         "FROM abuse_situation WHERE abuse_idx = ?;";
 
+        // abuse 테이블에서 삭제
         String deleteAbuseQuery = "update abuse_situation set status = 'INACTIVE' where abuse_idx = ?";
         int deleteAbuseParam = abuseIdx;
-
         this.jdbcTemplate.update(deleteAbuseQuery, deleteAbuseParam);
 
+        // 관련된 picture, video, recording 파일 삭제
+        String deletePictureAboutAbuseQuery = "UPDATE picture SET status = 'INACTIVE' WHERE pic_abuse_idx = ?;";
+        String deleteVideoAboutAbuseQuery = "UPDATE video SET status = 'INACTIVE' WHERE vid_abuse_idx = ?;";
+        String deleteRecordingAboutAbuseQuery = "UPDATE recording SET status = 'INACTIVE' WHERE rec_abuse_idx = ?;";
+        this.jdbcTemplate.update(deletePictureAboutAbuseQuery, deleteAbuseParam);
+        this.jdbcTemplate.update(deleteVideoAboutAbuseQuery, deleteAbuseParam);
+        this.jdbcTemplate.update(deleteRecordingAboutAbuseQuery, deleteAbuseParam);
+        
         return this.jdbcTemplate.queryForObject(getAbuseByIdxQuery,
                 (rs, rowNum) -> new PatchAbuseDelRes(
                         rs.getString("abuse_date"),
