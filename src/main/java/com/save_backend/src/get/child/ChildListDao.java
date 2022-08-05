@@ -16,7 +16,7 @@ public class ChildListDao {
 
     public List<GetChildListRes> getChildList(int userIdx) {
         String getChildListQuery =
-                "select child_idx, child_name, child_gender, child_age, child_address from child " +
+                "select child_idx, child_name, child_gender, child_age, child_address, child_detail_address, create_date from child " +
                 "where status = 'ACTIVE' and user_idx = ?";
 
         return this.jdbcTemplate.query(getChildListQuery,
@@ -25,7 +25,9 @@ public class ChildListDao {
                         resultSet.getString("child_name"),
                         resultSet.getString("child_gender"),
                         resultSet.getString("child_age"),
-                        resultSet.getString("child_address")
+                        resultSet.getString("child_address"),
+                        resultSet.getString("child_detail_address"),
+                        resultSet.getDate("create_date")
                 ), userIdx);
     }
 

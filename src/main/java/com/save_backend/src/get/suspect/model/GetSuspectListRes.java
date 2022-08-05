@@ -12,5 +12,6 @@ public class GetSuspectListRes {
     private String gender;
     private String age;
     private String address;
+    private String detailAddress;
     private String relation;
 }
