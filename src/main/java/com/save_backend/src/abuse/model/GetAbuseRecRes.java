@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class GetAbuseRecRes {
     private int recordIdx;
+    private String recordName;
 }

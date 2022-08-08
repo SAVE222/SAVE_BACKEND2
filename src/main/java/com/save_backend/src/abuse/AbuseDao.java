@@ -3,6 +3,7 @@ package com.save_backend.src.abuse;
 import com.save_backend.src.abuse.model.*;
 import com.save_backend.src.suspect.model.PatchSuspectReq;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -87,24 +88,32 @@ public class AbuseDao {
                                 ),rs.getInt("abuse_idx")
                         ),
                         getAbuseRecRes = this.jdbcTemplate.query(
-                                "SELECT recording_idx FROM recording " +
+                                "SELECT recording_idx, recording_name FROM recording " +
                                         "WHERE rec_abuse_idx = ?;\n",
                                 (rk,rownum) -> new GetAbuseRecRes(
-                                        rk.getInt("recording_idx")
+                                        rk.getInt("recording_idx"),
+                                        rk.getString("recording_name")
                                 ),rs.getInt("abuse_idx")
                         ),
-                        getAbuseSuspectRes = this.jdbcTemplate.queryForObject(
-                                "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address " +
-                                        "FROM suspect as s join situation_suspect_relation as ss on ss.suspect_idx_relation = s.suspect_idx\n" +
-                                        "        WHERE ss.abuse_idx_relation = ?;\n",
-                                (rk,rownum) -> new GetAbuseSuspectRes(
-                                        rk.getString("suspect_name"),
-                                        rk.getString("suspect_gender"),
-                                        rk.getString("suspect_age"),
-                                        rk.getString("suspect_address")
-                                ),rs.getInt("abuse_idx")
-                        )
+                        getAbuseSuspectRes = getAbuseSuspect(getAbuseByIdxParams)
                 ),getAbuseByIdxParams);
+    }
+
+    public GetAbuseSuspectRes getAbuseSuspect(int abuse_idx){
+        try{
+            return this.jdbcTemplate.queryForObject(
+                    "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address " +
+                            "FROM suspect as s join situation_suspect_relation as ss on ss.suspect_idx_relation = s.suspect_idx\n" +
+                            "        WHERE ss.abuse_idx_relation = ?;\n",
+                    (rk,rownum) -> new GetAbuseSuspectRes(
+                            rk.getString("suspect_name"),
+                            rk.getString("suspect_gender"),
+                            rk.getString("suspect_age"),
+                            rk.getString("suspect_address")
+                    ),abuse_idx);
+        }catch(EmptyResultDataAccessException e){}
+
+        return null;
     }
 
 
