@@ -3,7 +3,6 @@ package com.save_backend.src.media.video;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
-import com.save_backend.src.media.video.model.GetVideoRes;
 import com.save_backend.src.media.video.model.PatchVideoRes;
 import com.save_backend.src.media.video.model.PostVideoReq;
 import com.save_backend.src.media.video.model.PostVideoRes;

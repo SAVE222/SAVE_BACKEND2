@@ -4,7 +4,6 @@ import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponseStatus;
 import com.save_backend.src.media.S3Service;
 import com.save_backend.src.media.recording.entity.Recording;
-import com.save_backend.src.media.recording.model.GetRecordingRes;
 import com.save_backend.src.media.recording.model.PatchRecordingRes;
 import com.save_backend.src.media.recording.model.PostRecordingReq;
 import org.apache.commons.io.FilenameUtils;

@@ -3,7 +3,6 @@ package com.save_backend.src.media.picture;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
-import com.save_backend.src.media.picture.model.GetPictureRes;
 import com.save_backend.src.media.picture.model.PatchPictureRes;
 import com.save_backend.src.media.picture.model.PostPictureReq;
 import com.save_backend.src.media.picture.model.PostPictureRes;

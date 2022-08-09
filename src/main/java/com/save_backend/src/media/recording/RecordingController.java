@@ -3,7 +3,6 @@ package com.save_backend.src.media.recording;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
-import com.save_backend.src.media.recording.model.GetRecordingRes;
 import com.save_backend.src.media.recording.model.PatchRecordingRes;
 import com.save_backend.src.media.recording.model.PostRecordingReq;
 import com.save_backend.src.media.recording.model.PostRecordingRes;
