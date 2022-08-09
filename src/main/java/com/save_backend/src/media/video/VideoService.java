@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class VideoService {
 
-    private String path = "https://dby56rj67jahx.cloudfront.net/video/";
+    private final String path = "https://dby56rj67jahx.cloudfront.net/";
 
     private final S3Service s3Service;
     private final VideoDbRepository videoDbRepository;
@@ -28,10 +28,11 @@ public class VideoService {
     }
 
 
-    public Long upload(MultipartFile video, String videoName, PostVideoReq postVideoReq) throws BaseException {
+    public Long upload(MultipartFile video, MultipartFile thumbnail, String videoName, PostVideoReq postVideoReq) throws BaseException {
         try{
-            String location = s3Service.upload(video, "static/video");
-            return videoDbRepository.save(new Video(location, videoName, postVideoReq.getVidAbuseIdx(), postVideoReq.getVidChildIdx())).getVideoIdx();
+            String videoPath = s3Service.upload(video, "static/video");
+            String thumbnailPath = s3Service.upload(thumbnail, "static/thumbnail");
+            return videoDbRepository.save(new Video(path+"video/"+FilenameUtils.getName(videoPath), videoName, path+"thumbnail/"+FilenameUtils.getName(thumbnailPath), postVideoReq.getVidAbuseIdx(), postVideoReq.getVidChildIdx())).getVideoIdx();
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.UPLOAD_FAIL_VIDEO);
         }

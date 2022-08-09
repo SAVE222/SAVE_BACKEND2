@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class RecordingService {
 
-    private String path = "https://dby56rj67jahx.cloudfront.net/recording/";
+    private final String path = "https://dby56rj67jahx.cloudfront.net/recording/";
 
     private final S3Service s3Service;
     private final RecordingDbRepository recordingDbRepository;
@@ -32,7 +32,7 @@ public class RecordingService {
     public Long upload(MultipartFile recording, String recordingName, PostRecordingReq postRecordingReq) throws BaseException {
         try{
             String location = s3Service.upload(recording, "static/recording");
-            return recordingDbRepository.save(new Recording(location, recordingName, postRecordingReq.getRecAbuseIdx(), postRecordingReq.getRecChildIdx())).getRecordingIdx();
+            return recordingDbRepository.save(new Recording(path+FilenameUtils.getName(location), recordingName, postRecordingReq.getRecAbuseIdx(), postRecordingReq.getRecChildIdx())).getRecordingIdx();
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.UPLOAD_FAIL_RECORDING);
         }
