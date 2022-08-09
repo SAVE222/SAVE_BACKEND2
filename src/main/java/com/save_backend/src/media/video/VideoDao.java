@@ -29,10 +29,4 @@ public class VideoDao {
 
         return this.jdbcTemplate.queryForObject(checkExistQuery, boolean.class, videoIdx);
     }
-
-    public String getVideoKey(Long videoIdx) {
-        String getVideoKeyQuery = "select vid_path from video where video_idx = ?";
-
-        return this.jdbcTemplate.queryForObject(getVideoKeyQuery, String.class, videoIdx);
-    }
 }

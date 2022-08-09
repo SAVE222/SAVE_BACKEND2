@@ -3,7 +3,6 @@ package com.save_backend.src.media.picture;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
-import com.save_backend.src.media.picture.model.GetPictureRes;
 import com.save_backend.src.media.picture.model.PatchPictureRes;
 import com.save_backend.src.media.picture.model.PostPictureReq;
 import com.save_backend.src.media.picture.model.PostPictureRes;
@@ -56,20 +55,6 @@ public class PictureController {
     public BaseResponse<PatchPictureRes> deletePicture(@PathVariable Long pictureIdx){
         try{
             PatchPictureRes result = pictureService.deletePicture(pictureIdx);
-            return new BaseResponse<>(result);
-        }catch(BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
-
-    /**
-     * [GET]사진 조회 API
-     */
-    @GetMapping(value = "/{pictureIdx}")
-    public BaseResponse<GetPictureRes> downloadPicture(@PathVariable Long pictureIdx){
-        try{
-            GetPictureRes result = new GetPictureRes(pictureService.getPicturePath(pictureIdx));
             return new BaseResponse<>(result);
         }catch(BaseException e){
             return new BaseResponse<>(e.getStatus());

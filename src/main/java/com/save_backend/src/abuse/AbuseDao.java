@@ -73,25 +73,26 @@ public class AbuseDao {
                         rs.getString("etc"),
                         rs.getString("create_date"),
                         getAbusePicRes = this.jdbcTemplate.query(
-                                "SELECT picture_idx " +
+                                "SELECT pic_path " +
                                         "FROM picture " +
                                         "WHERE pic_abuse_idx = ?;\n",
                                 (rk,rownum) -> new GetAbusePicRes(
-                                        rk.getInt("picture_idx")
+                                        rk.getString("pic_path")
                                 ),rs.getInt("abuse_idx")
                         ),
                         getAbuseVidRes = this.jdbcTemplate.query(
-                                "SELECT video_idx FROM video " +
+                                "SELECT vid_path, thumbnail_path FROM video " +
                                         "WHERE vid_abuse_idx = ?;\n",
                                 (rk,rownum) -> new GetAbuseVidRes(
-                                        rk.getInt("video_idx")
+                                        rk.getString("vid_path"),
+                                        rk.getString("thumbnail_path")
                                 ),rs.getInt("abuse_idx")
                         ),
                         getAbuseRecRes = this.jdbcTemplate.query(
-                                "SELECT recording_idx, recording_name FROM recording " +
+                                "SELECT rec_path, recording_name FROM recording " +
                                         "WHERE rec_abuse_idx = ?;\n",
                                 (rk,rownum) -> new GetAbuseRecRes(
-                                        rk.getInt("recording_idx"),
+                                        rk.getString("rec_path"),
                                         rk.getString("recording_name")
                                 ),rs.getInt("abuse_idx")
                         ),
@@ -111,9 +112,9 @@ public class AbuseDao {
                             rk.getString("suspect_age"),
                             rk.getString("suspect_address")
                     ),abuse_idx);
-        }catch(EmptyResultDataAccessException e){}
-
-        return null;
+        }catch(EmptyResultDataAccessException e){
+            return null;
+        }
     }
 
 

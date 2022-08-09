@@ -3,7 +3,6 @@ package com.save_backend.src.media.video;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
-import com.save_backend.src.media.video.model.GetVideoRes;
 import com.save_backend.src.media.video.model.PatchVideoRes;
 import com.save_backend.src.media.video.model.PostVideoReq;
 import com.save_backend.src.media.video.model.PostVideoRes;
@@ -28,7 +27,7 @@ public class VideoController {
      * (동영상 추가하는 경우[수정]에도 해당 API 이용)
      */
     @PostMapping("")
-    public BaseResponse<PostVideoRes> uploadVideo(@RequestPart MultipartFile[] video, @RequestPart PostVideoReq postVideoReq){
+    public BaseResponse<PostVideoRes> uploadVideo(@RequestPart MultipartFile[] video, MultipartFile thumbnail, @RequestPart PostVideoReq postVideoReq){
         try{
             if(video == null){
                 return new BaseResponse<>(BaseResponseStatus.EMPTY_FILE);
@@ -36,7 +35,7 @@ public class VideoController {
 
             PostVideoRes result = new PostVideoRes();
             for(MultipartFile p : video){
-                Long videoIdx = videoService.upload(p, p.getOriginalFilename(), postVideoReq);
+                Long videoIdx = videoService.upload(p, thumbnail, p.getOriginalFilename(), postVideoReq);
                 result.setVideoIdx(videoIdx);
             }
             result.setCompleteMessage("동영상 업로드가 완료되었습니다.");
@@ -60,19 +59,4 @@ public class VideoController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-
-    /**
-     * [GET]동영상 조회 API
-     */
-    @GetMapping(value = "{videoIdx}")
-    public BaseResponse<GetVideoRes> downloadVideo(@PathVariable Long videoIdx){
-        try{
-            GetVideoRes result = new GetVideoRes(videoService.getVideoPath(videoIdx));
-            return new BaseResponse<>(result);
-        }catch(BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
 }

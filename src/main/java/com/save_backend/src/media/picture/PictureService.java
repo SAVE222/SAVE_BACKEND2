@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class PictureService {
 
-    private String path = "https://dby56rj67jahx.cloudfront.net/picture/";
+    private final String path = "https://dby56rj67jahx.cloudfront.net/picture/";
 
     private final S3Service s3Service;
     private final PictureDbRepository pictureDbRepository;
@@ -31,7 +31,7 @@ public class PictureService {
     Long upload(MultipartFile picture, String pictureName, PostPictureReq postPictureReq) throws BaseException{
         try{
             String location = s3Service.upload(picture, "static/picture");
-            return pictureDbRepository.save(new Picture(location, pictureName, postPictureReq.getPicAbuseIdx(), postPictureReq.getPicChildIdx())).getPictureIdx();
+            return pictureDbRepository.save(new Picture(path+FilenameUtils.getName(location), pictureName, postPictureReq.getPicAbuseIdx(), postPictureReq.getPicChildIdx())).getPictureIdx();
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.UPLOAD_FAIL_IMAGE);
        }
@@ -39,7 +39,6 @@ public class PictureService {
 
 
     public PatchPictureRes deletePicture(Long pictureIdx) throws BaseException {
-        //validation
         if(!pictureDao.isPictureExist(pictureIdx)){
             throw new BaseException(BaseResponseStatus.NOT_EXIST_PICTURE);
         }
@@ -48,20 +47,6 @@ public class PictureService {
             return pictureDao.deletePicture(pictureIdx);
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.DELETE_FAIL_IMAGE);
-        }
-    }
-
-
-    public String getPicturePath(Long pictureIdx) throws BaseException {
-        if(!pictureDao.isPictureExist(pictureIdx)){
-            throw new BaseException(BaseResponseStatus.NOT_EXIST_PICTURE);
-        }
-
-        try{
-            String fileName = FilenameUtils.getName(pictureDao.getPictureKey(pictureIdx));
-            return path + fileName;
-        }catch (Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
 }

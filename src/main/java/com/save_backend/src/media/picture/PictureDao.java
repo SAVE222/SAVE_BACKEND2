@@ -28,10 +28,4 @@ public class PictureDao {
 
         return this.jdbcTemplate.queryForObject(checkExistQuery, boolean.class, pictureIdx);
     }
-
-    public String getPictureKey(Long pictureIdx){
-        String getPictureKeyQuery = "select pic_path from picture where picture_idx = ?";
-
-        return this.jdbcTemplate.queryForObject(getPictureKeyQuery, String.class, pictureIdx);
-    }
 }

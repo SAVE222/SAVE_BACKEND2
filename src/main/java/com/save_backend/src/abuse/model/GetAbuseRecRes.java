@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetAbuseRecRes {
-    private int recordingIdx;
+    private String recordingPath;
     private String recordingName;
 }

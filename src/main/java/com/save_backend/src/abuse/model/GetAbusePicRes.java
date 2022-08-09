@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetAbusePicRes {
-    private int pictureIdx;
+    private String picturePath;
 }

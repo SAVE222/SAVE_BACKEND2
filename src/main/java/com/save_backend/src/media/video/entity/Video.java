@@ -27,15 +27,19 @@ public class Video {
     @Column(name = "video_name")
     String videoName;
 
+    @Column(name = "thumbnail_path")
+    String thumbnailPath;
+
     @Column(name = "vid_abuse_idx")
     int vidAbuseIdx;
 
     @Column(name = "vid_child_idx")
     int vidChildIdx;
 
-    public Video(String path, String videoName, int vidAbuseIdx, int vidChildIdx) {
+    public Video(String path, String videoName, String thumbnailPath, int vidAbuseIdx, int vidChildIdx) {
         this.vidPath = path;
         this.videoName = videoName;
+        this.thumbnailPath = thumbnailPath;
         this.vidAbuseIdx = vidAbuseIdx;
         this.vidChildIdx = vidChildIdx;
     }

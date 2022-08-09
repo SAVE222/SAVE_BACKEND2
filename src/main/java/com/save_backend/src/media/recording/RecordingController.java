@@ -3,7 +3,6 @@ package com.save_backend.src.media.recording;
 import com.save_backend.config.exception.BaseException;
 import com.save_backend.config.response.BaseResponse;
 import com.save_backend.config.response.BaseResponseStatus;
-import com.save_backend.src.media.recording.model.GetRecordingRes;
 import com.save_backend.src.media.recording.model.PatchRecordingRes;
 import com.save_backend.src.media.recording.model.PostRecordingReq;
 import com.save_backend.src.media.recording.model.PostRecordingRes;
@@ -56,20 +55,6 @@ public class RecordingController {
     public BaseResponse<PatchRecordingRes> deleteRecording(@PathVariable Long recordingIdx){
         try{
             PatchRecordingRes result = recordingService.deleteRecording(recordingIdx);
-            return new BaseResponse<>(result);
-        }catch(BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
-
-    /**
-     * [GET]녹음파일 조회 API
-     */
-    @GetMapping(value = "{recordingIdx}")
-    public BaseResponse<GetRecordingRes> downloadRecording(@PathVariable Long recordingIdx){
-        try{
-            GetRecordingRes result = new GetRecordingRes(recordingService.getRecordingPath(recordingIdx));
             return new BaseResponse<>(result);
         }catch(BaseException e){
             return new BaseResponse<>(e.getStatus());

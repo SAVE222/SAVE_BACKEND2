@@ -8,5 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class GetAbuseVidRes {
-    private int videoIdx;
+    private String videoPath;
+    private String thumbnailPath;
 }
