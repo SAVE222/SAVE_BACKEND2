@@ -60,19 +60,4 @@ public class VideoController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-
-    /**
-     * [GET]동영상 조회 API
-     */
-    @GetMapping(value = "{videoIdx}")
-    public BaseResponse<GetVideoRes> downloadVideo(@PathVariable Long videoIdx){
-        try{
-            GetVideoRes result = new GetVideoRes(videoService.getVideoPath(videoIdx));
-            return new BaseResponse<>(result);
-        }catch(BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
-
 }

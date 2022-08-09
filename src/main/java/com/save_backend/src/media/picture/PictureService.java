@@ -39,7 +39,6 @@ public class PictureService {
 
 
     public PatchPictureRes deletePicture(Long pictureIdx) throws BaseException {
-        //validation
         if(!pictureDao.isPictureExist(pictureIdx)){
             throw new BaseException(BaseResponseStatus.NOT_EXIST_PICTURE);
         }
@@ -48,20 +47,6 @@ public class PictureService {
             return pictureDao.deletePicture(pictureIdx);
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.DELETE_FAIL_IMAGE);
-        }
-    }
-
-
-    public String getPicturePath(Long pictureIdx) throws BaseException {
-        if(!pictureDao.isPictureExist(pictureIdx)){
-            throw new BaseException(BaseResponseStatus.NOT_EXIST_PICTURE);
-        }
-
-        try{
-            String fileName = FilenameUtils.getName(pictureDao.getPictureKey(pictureIdx));
-            return path + fileName;
-        }catch (Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
 }

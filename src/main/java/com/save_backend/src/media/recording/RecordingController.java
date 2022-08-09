@@ -61,18 +61,4 @@ public class RecordingController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-
-    /**
-     * [GET]녹음파일 조회 API
-     */
-    @GetMapping(value = "{recordingIdx}")
-    public BaseResponse<GetRecordingRes> downloadRecording(@PathVariable Long recordingIdx){
-        try{
-            GetRecordingRes result = new GetRecordingRes(recordingService.getRecordingPath(recordingIdx));
-            return new BaseResponse<>(result);
-        }catch(BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
 }

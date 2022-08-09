@@ -39,7 +39,6 @@ public class VideoService {
     }
 
     public PatchVideoRes deleteVideo(Long videoIdx) throws BaseException {
-        //validation
         if(!videoDao.isVideoExist(videoIdx)){
             throw new BaseException(BaseResponseStatus.NOT_EXIST_VIDEO);
         }
@@ -48,20 +47,6 @@ public class VideoService {
             return videoDao.deleteVideo(videoIdx);
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.DELETE_FAIL_VIDEO);
-        }
-    }
-
-    public String getVideoPath(Long videoIdx) throws BaseException {
-        //validation
-        if(!videoDao.isVideoExist(videoIdx)){
-            throw new BaseException(BaseResponseStatus.NOT_EXIST_VIDEO);
-        }
-
-        try{
-            String fileName = FilenameUtils.getName(videoDao.getVideoKey(videoIdx));
-            return path + fileName;
-        }catch(Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
 }

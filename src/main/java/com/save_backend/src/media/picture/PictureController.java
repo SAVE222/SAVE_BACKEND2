@@ -61,18 +61,4 @@ public class PictureController {
             return new BaseResponse<>(e.getStatus());
         }
     }
-
-
-    /**
-     * [GET]사진 조회 API
-     */
-    @GetMapping(value = "/{pictureIdx}")
-    public BaseResponse<GetPictureRes> downloadPicture(@PathVariable Long pictureIdx){
-        try{
-            GetPictureRes result = new GetPictureRes(pictureService.getPicturePath(pictureIdx));
-            return new BaseResponse<>(result);
-        }catch(BaseException e){
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
 }

@@ -29,10 +29,4 @@ public class RecordingDao {
 
         return this.jdbcTemplate.queryForObject(checkExistQuery, boolean.class, recordingIdx);
     }
-
-    public String getRecordingKey(Long recordingIdx) {
-        String getRecordingKeyQuery = "select rec_path from recording where recording_idx = ?";
-
-        return this.jdbcTemplate.queryForObject(getRecordingKeyQuery, String.class, recordingIdx);
-    }
 }

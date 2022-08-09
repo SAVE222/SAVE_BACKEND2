@@ -39,7 +39,6 @@ public class RecordingService {
     }
 
     public PatchRecordingRes deleteRecording(Long recordingIdx) throws BaseException {
-        //validation
         if(!recordingDao.isRecordingExist(recordingIdx)){
             throw new BaseException(BaseResponseStatus.NOT_EXIST_RECORDING);
         }
@@ -48,20 +47,6 @@ public class RecordingService {
             return recordingDao.deleteRecording(recordingIdx);
         }catch(Exception e){
             throw new BaseException(BaseResponseStatus.DELETE_FAIL_RECORDING);
-        }
-    }
-
-    public String getRecordingPath(Long recordingIdx) throws BaseException {
-        //validation
-        if(!recordingDao.isRecordingExist(recordingIdx)){
-            throw new BaseException(BaseResponseStatus.NOT_EXIST_RECORDING);
-        }
-
-        try{
-            String fileName = FilenameUtils.getName(recordingDao.getRecordingKey(recordingIdx));
-            return path + fileName;
-        }catch(Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
         }
     }
 }
