@@ -20,7 +20,7 @@ public class GetAbuseRes {
     private String type;
     private String detail;
     private String etc;
-    private String createdAt;
+    private Date createdAt;
     private List<GetAbusePicRes> picture;
     private List<GetAbuseVidRes> video;
     private List<GetAbuseRecRes> recording;
