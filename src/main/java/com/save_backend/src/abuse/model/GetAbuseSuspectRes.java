@@ -12,4 +12,6 @@ public class GetAbuseSuspectRes {
     private String suspectGender;
     private String suspectAge;
     private String suspectAddress;
+    private String suspectDetailAddress;
+    private String relationship;
 }

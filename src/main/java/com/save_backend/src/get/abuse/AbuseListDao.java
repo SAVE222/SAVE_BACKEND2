@@ -24,7 +24,7 @@ public class AbuseListDao {
                         resultSet.getString("abuse_date"),
                         resultSet.getString("abuse_time"),
                         resultSet.getString("abuse_place"),
-                        resultSet.getString("create_date")
+                        resultSet.getDate("create_date")
                 ), childIdx);
     }
 

@@ -71,7 +71,7 @@ public class AbuseDao {
                         rs.getString("abuse_type"),
                         rs.getString("detail_description"),
                         rs.getString("etc"),
-                        rs.getString("create_date"),
+                        rs.getDate("create_date"),
                         getAbusePicRes = this.jdbcTemplate.query(
                                 "SELECT pic_path " +
                                         "FROM picture " +
@@ -103,14 +103,16 @@ public class AbuseDao {
     public GetAbuseSuspectRes getAbuseSuspect(int abuse_idx){
         try{
             return this.jdbcTemplate.queryForObject(
-                    "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address " +
+                    "SELECT s.suspect_name, s.suspect_gender, s.suspect_age, s.suspect_address, s.suspect_detail_address, s.relation_with_child " +
                             "FROM suspect as s join situation_suspect_relation as ss on ss.suspect_idx_relation = s.suspect_idx\n" +
                             "        WHERE ss.abuse_idx_relation = ?;\n",
                     (rk,rownum) -> new GetAbuseSuspectRes(
                             rk.getString("suspect_name"),
                             rk.getString("suspect_gender"),
                             rk.getString("suspect_age"),
-                            rk.getString("suspect_address")
+                            rk.getString("suspect_address"),
+                            rk.getString("suspect_detail_address"),
+                            rk.getString("relation_with_child")
                     ),abuse_idx);
         }catch(EmptyResultDataAccessException e){
             return null;
