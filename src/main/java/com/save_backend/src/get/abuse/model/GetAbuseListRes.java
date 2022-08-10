@@ -3,6 +3,8 @@ package com.save_backend.src.get.abuse.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 public class GetAbuseListRes {
@@ -11,5 +13,5 @@ public class GetAbuseListRes {
     private String date;
     private String time;
     private String place;
-    private String create_date;
+    private Date create_date;
 }
