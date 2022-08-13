@@ -1,7 +1,6 @@
 package com.save_backend.src.auth;
 
 
-import com.save_backend.src.auth.model.PatchAuthReq;
 import com.save_backend.src.auth.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,6 +32,15 @@ public class AuthDao {
                 ), getUserParam);
     }
 
+    public int insertLogoutToken(String jwtToken, Long expiration) {
+        String insertLogoutTokenuery = "INSERT INTO logout_token (jwt_token, expiration) VALUES (?,?);";
+        Object[] insertLogoutTokenParam = new Object[]{jwtToken, expiration};
+
+        this.jdbcTemplate.update(insertLogoutTokenuery, insertLogoutTokenParam);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery, int.class);
+    }
 
     public int modifyPassword(int userIdx, String encryptedNewPassword) {
         String modifyPasswordQuery = "UPDATE user SET password = ? WHERE user_idx = ? AND status = 'ACTIVE';";
@@ -47,6 +55,8 @@ public class AuthDao {
 
         return this.jdbcTemplate.update(modifyPasswordQuery, modifyPasswordParam);
     }
+
+
 
 
     /**
@@ -70,5 +80,11 @@ public class AuthDao {
 
         String passWord =  this.jdbcTemplate.queryForObject(getPasswordQuery,String.class, getPasswordParams);
         return passWord;
+    }
+
+    public int checkLogoutToken(String jwtToken){
+        String checkLogoutTokenQuery = "select exists(select jwt_token from logout_token where jwt_token = ?)";
+        String checkLogoutTokenParams = jwtToken;
+        return this.jdbcTemplate.queryForObject(checkLogoutTokenQuery,int.class,checkLogoutTokenParams);
     }
 }

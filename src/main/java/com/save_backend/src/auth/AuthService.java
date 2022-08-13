@@ -5,20 +5,14 @@ import com.save_backend.src.auth.model.*;
 import com.save_backend.src.utils.jwt.JwtProperties;
 import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.parameters.P;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 
-import java.time.Duration;
-import java.util.Date;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
-import static com.save_backend.src.utils.jwt.JwtProperties.LOGOUT_FREFIX;
-import static com.save_backend.src.utils.jwt.JwtProperties.SECRET_KEY;
 
 
 @Service
@@ -28,8 +22,6 @@ public class AuthService{
     private final AuthProvider authProvider;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
     @Autowired
     public AuthService(AuthDao authDao, AuthProvider authProvider, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authDao = authDao;
@@ -69,10 +61,10 @@ public class AuthService{
     }
 
     public int tokenLogin(String jwtToken) throws BaseException {
-        // Redis에 token 존재하는지 확인 -> 없으면 성공, 있으면 실패
-        if(redisTemplate.opsForValue().get(LOGOUT_FREFIX + jwtToken) != null) {
+        // DB에 logout_token 존재하는지 확인 -> 없으면 로그아웃 유저가 아니므로 자동로그인 성공, 있으면 로그아웃 유저이므로 실패
+        if(authDao.checkLogoutToken(jwtToken)==1) {
             // 로그아웃처리된 token입니다
-            throw new BaseException(AREADY_LOGOUT_USER);
+            throw new BaseException(ALREADY_LOGOUT_USER);
         }
 
         // jwt 로 유저인덱스 가져오기
@@ -89,23 +81,21 @@ public class AuthService{
         if(jwtService.getUserIdx() != userIdx) {
             throw new BaseException(INVALID_ACCESS_USER_JWT);
         }
-        // Redis에 token 존재하는지 확인 -> 없으면 성공, 있으면 실패
-        if(redisTemplate.opsForValue().get(LOGOUT_FREFIX + jwtToken) != null) {
-            throw new BaseException(AREADY_LOGOUT_USER);
+
+        // DB에 logout_token 존재하는지 확인 -> 없으면 로그아웃 토큰 추가, 있으면 이미 로그아웃된 유저이므로 예외처리
+        if(authDao.checkLogoutToken(jwtToken)==1) {
+            throw new BaseException(ALREADY_LOGOUT_USER);
         }
-        // 토큰 남은시간 계산후 해당 시간만큼 만료시간을 정해 해당 토큰을 Redis에 저장
-        try {
-            Long expiration = jwtService.getExpiration(jwtToken);
-            setDataExpired(LOGOUT_FREFIX +jwtToken, jwtToken, expiration);
+
+        // 토큰 남은시간 계산후 해당 시간만큼 만료시간을 정해 해당 토큰을 DB에 저장
+            try {
+                Long expiration = jwtService.getExpiration(jwtToken);
+                int jwtTokenIdx = authDao.insertLogoutToken(jwtToken, expiration);
         } catch (Exception exception) {
-            throw new BaseException(REDIS_ERROR);
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public void setDataExpired(String key, Object value, long duration) {
-        Duration expireDuration = Duration.ofSeconds(duration);
-        redisTemplate.opsForValue().set(key, String.valueOf(value),expireDuration);
-    }
 
     public String modifyPassword(int userIdx, PatchAuthReq patchAuthReq) throws BaseException  {
         // 유저 존재여부
