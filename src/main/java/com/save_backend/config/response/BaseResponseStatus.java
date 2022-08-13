@@ -125,7 +125,7 @@ public enum BaseResponseStatus {
     DOWNLOAD_FAIL_VIDEO(false, 3047, "동영상 다운로드에 실패하였습니다."),
     DOWNLOAD_FAIL_RECORDING(false, 3048, "녹음파일 다운로드에 실패하였습니다."),
     FAIL_TO_LOGOUT(false,3049,"로그아웃에 실패하였습니다."),
-    AREADY_LOGOUT_USER(false,3050,"이미 로그아웃처리된 유저입니다."),
+    ALREADY_LOGOUT_USER(false,3050,"이미 로그아웃처리된 유저입니다."),
     MODIFY_FAIL_PASSWORD(false,3051,"비밀번호 변경에 실패하였습니다."),
 
 

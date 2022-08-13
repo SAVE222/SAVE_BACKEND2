@@ -69,7 +69,7 @@ public class AuthService{
         // DB에 logout_token 존재하는지 확인 -> 없으면 로그아웃 유저가 아니므로 자동로그인 성공, 있으면 로그아웃 유저이므로 실패
         if(authDao.checkLogoutToken(jwtToken)==1) {
             // 로그아웃처리된 token입니다
-            throw new BaseException(AREADY_LOGOUT_USER);
+            throw new BaseException(ALREADY_LOGOUT_USER);
         }
 
         // jwt 로 유저인덱스 가져오기
@@ -81,7 +81,7 @@ public class AuthService{
         return userIdx;
     }
 
-    public void logout(int userIdx, String jwtToken, HttpServletRequest request) throws BaseException {
+    public void logout(int userIdx, String jwtToken) throws BaseException {
         // jwt에서 userIdx를 추출해 PathVariable로 받은 userIdx와 일치하는지 확인
         if(jwtService.getUserIdx() != userIdx) {
             throw new BaseException(INVALID_ACCESS_USER_JWT);
@@ -89,7 +89,7 @@ public class AuthService{
 
         // DB에 logout_token 존재하는지 확인 -> 없으면 로그아웃 토큰 추가, 있으면 이미 로그아웃된 유저이므로 예외처리
         if(authDao.checkLogoutToken(jwtToken)==1) {
-            throw new BaseException(AREADY_LOGOUT_USER);
+            throw new BaseException(ALREADY_LOGOUT_USER);
         }
 
         // 토큰 남은시간 계산후 해당 시간만큼 만료시간을 정해 해당 토큰을 DB에 저장
@@ -97,7 +97,7 @@ public class AuthService{
                 Long expiration = jwtService.getExpiration(jwtToken);
                 int jwtTokenIdx = authDao.insertLogoutToken(jwtToken, expiration);
         } catch (Exception exception) {
-            throw new BaseException(REDIS_ERROR);
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 

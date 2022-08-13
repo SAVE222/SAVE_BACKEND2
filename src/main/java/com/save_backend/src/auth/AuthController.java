@@ -97,7 +97,7 @@ public class AuthController {
      */
     @ResponseBody
     @GetMapping ("/logout/{userIdx}")
-    public BaseResponse<String> logout(@PathVariable("userIdx") int userIdx, HttpServletRequest request){
+    public BaseResponse<String> logout(@PathVariable("userIdx") int userIdx){
         try {
             // jwt 추출
             String jwtToken = jwtService.getJwt();
@@ -110,7 +110,7 @@ public class AuthController {
                 throw new BaseException(INVALID_ACCESS_USER_JWT);
             }
 
-            authService.logout(userIdx, jwtToken, request);
+            authService.logout(userIdx, jwtToken);
             String logoutMessage = "로그아웃을 성공했습니다";
             return new BaseResponse<>(logoutMessage);
         } catch (BaseException exception) {
