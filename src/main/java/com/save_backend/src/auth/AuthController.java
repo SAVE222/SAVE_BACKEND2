@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static com.save_backend.config.response.BaseResponseStatus.*;
@@ -96,7 +97,7 @@ public class AuthController {
      */
     @ResponseBody
     @GetMapping ("/logout/{userIdx}")
-    public BaseResponse<String> logout(@PathVariable("userIdx") int userIdx){
+    public BaseResponse<String> logout(@PathVariable("userIdx") int userIdx, HttpServletRequest request){
         try {
             // jwt 추출
             String jwtToken = jwtService.getJwt();
@@ -109,7 +110,7 @@ public class AuthController {
                 throw new BaseException(INVALID_ACCESS_USER_JWT);
             }
 
-            authService.logout(userIdx, jwtToken);
+            authService.logout(userIdx, jwtToken, request);
             String logoutMessage = "로그아웃을 성공했습니다";
             return new BaseResponse<>(logoutMessage);
         } catch (BaseException exception) {

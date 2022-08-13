@@ -11,11 +11,6 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  redis:
-#    TODO : ec2 이용해 서버배포할 때 aws-redis 엔드포인트로 변경해주기
-    host: localhost
-    port: 6379
-
   mail:
     host: smtp.naver.com
     port: 465
@@ -25,3 +20,12 @@ spring:
       mail.smtp.auth: true
       mail.smtp.ssl.enable: true
 
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+  database: mysql
