@@ -5,13 +5,10 @@ import com.save_backend.src.auth.model.*;
 import com.save_backend.src.utils.jwt.JwtProperties;
 import com.save_backend.src.utils.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.parameters.P;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -25,8 +22,6 @@ public class AuthService{
     private final AuthProvider authProvider;
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
     @Autowired
     public AuthService(AuthDao authDao, AuthProvider authProvider, JwtService jwtService, PasswordEncoder passwordEncoder) {
         this.authDao = authDao;
