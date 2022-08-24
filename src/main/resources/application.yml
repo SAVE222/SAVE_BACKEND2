@@ -1,3 +1,6 @@
+server:
+  port: 9000
+
 spring:
   application:
     name: save
@@ -7,3 +10,22 @@ spring:
     username: save
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: save-children@naver.com
+    password:
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+  database: mysql
